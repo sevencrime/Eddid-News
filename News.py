@@ -8,11 +8,14 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from browsermobproxy import Server
 from selenium.webdriver.chrome.options import Options
+import requests
 
 class News():
 
     def __init__(self, url):
         self.url = url
+        # self.mobproxybat = "D:/下载/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat"
+        self.mobproxybat = "C:/Program Files (x86)/Google/Chrome/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat"
 
     def find_element(self, driver, *loc):
         try:
@@ -32,10 +35,31 @@ class News():
             flag = False
             return flag
 
+    def get_flash_list(self):
+        url = "http://114.55.249.227:8080/eddid/flash_list"
+
+        data = {
+            'channel' : -8200
+        }
+
+        resp = requests.get(url, params=data).json()
+
+        for res in resp['data']:
+            # print(res['data'])
+            if 'content' in res['data'].keys():
+                print(res['data']['content'])
+
+            elif [k in ['name', 'country', 'time_period'] for k in resp.keys()]:
+                res['data']['country']
+                res['data']['time_period']
+                res['data']['name']
+                print(res['data']['country'] + res['data']['time_period'] + res['data']['name'])
+
+
     def test_News_futures(self):
         print("开始请求资源网站")
         # 建立browsermobproxy服务, 需指定browsermob-proxy, 类似chromedriver
-        server = Server("D:/下载/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat")
+        server = Server(self.mobproxybat)
         server.start()
         # 创建代理
         proxy = server.create_proxy()
@@ -66,10 +90,21 @@ class News():
         # print(driver.page_source)
 
         soup = BeautifulSoup(driver.page_source,'lxml')
-        context = soup.select("div.md-example-child.news p.md-cell-item-title")
+        # context = soup.select("div.md-example-child.news p.md-cell-item-title")
+        # spantitle = soup.select("div.item-one.item-two > span.title")
 
+        # for text in context:
+        #     print(text.get_text())
+
+        # for span in spantitle:
+        #     print(span.get_text())
+
+        context = soup.select("div.md-example-child.news div.md-cell-item-content")
+        # print(context)
         for text in context:
-            print(text.get_text())
+            # print(''.join(text.select("p.md-cell-item-brief")))
+            print(''.join(text.select("p.md-cell-item-title")))
+                  # .replace(u"\xa0", u""))
 
 
         # 代理需要关闭
@@ -83,3 +118,5 @@ if __name__ == '__main__':
     url = 'https://download.eddidapp.com/page/eddid-news/index.html'
     n = News(url)
     n.test_News_futures()
+    # n.get_flash_list()
+
