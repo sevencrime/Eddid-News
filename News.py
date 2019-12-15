@@ -9,13 +9,14 @@ from selenium import webdriver
 from browsermobproxy import Server
 from selenium.webdriver.chrome.options import Options
 import requests
+import re
 
 class News():
 
     def __init__(self, url):
         self.url = url
-        # self.mobproxybat = "D:/下载/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat"
-        self.mobproxybat = "C:/Program Files (x86)/Google/Chrome/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat"
+        self.mobproxybat = "D:/下载/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat"
+        # self.mobproxybat = "C:/Program Files (x86)/Google/Chrome/browsermob-proxy-2.1.4/bin/browsermob-proxy.bat"
 
     def find_element(self, driver, *loc):
         try:
@@ -35,9 +36,20 @@ class News():
             flag = False
             return flag
 
-    def get_flash_list(self):
-        url = "http://114.55.249.227:8080/eddid/flash_list"
+    def same_flashData(self, flashdata, flashaip):
+        diff_list = []
+        for d in flashdata:
+            try:
+                assert d in flashaip
+            except AssertionError:
+                diff_list.append(d)
+                continue
 
+        return diff_list
+
+    def get_flashAPI(self):
+        url = "http://114.55.249.227:8080/eddid/flash_list"
+        api_flashList = []
         data = {
             'channel' : -8200
         }
@@ -47,16 +59,26 @@ class News():
         for res in resp['data']:
             # print(res['data'])
             if 'content' in res['data'].keys():
-                print(res['data']['content'])
+
+                if res['data']['content'].find("<b>") != -1:
+                    c_text = ''.join(re.findall(r"<b>(.+)</b>", res['data']['content']))
+                    api_flashList.append(c_text)
+                    continue
+
+                api_flashList.append(res['data']['content'])
 
             elif [k in ['name', 'country', 'time_period'] for k in resp.keys()]:
-                res['data']['country']
-                res['data']['time_period']
-                res['data']['name']
-                print(res['data']['country'] + res['data']['time_period'] + res['data']['name'])
+                # res['data']['country']
+                # res['data']['time_period']
+                # res['data']['name']
+                api_flashList.append(res['data']['country'] + res['data']['time_period'] + res['data']['name'])
+
+        print("**********************************************************")
+        # print(api_flashList)
+        return api_flashList    
 
 
-    def test_News_futures(self):
+    def get_flash_futures(self):
         print("开始请求资源网站")
         # 建立browsermobproxy服务, 需指定browsermob-proxy, 类似chromedriver
         server = Server(self.mobproxybat)
@@ -67,7 +89,7 @@ class News():
         # 为chrome启动时设置代理
         chrome_options.add_argument('--proxy-server={0}'.format(proxy.proxy))
         # 静默模式, 不显示浏览器
-        # chrome_options.add_argument('headless')
+        chrome_options.add_argument('headless')
 
         driver = webdriver.Chrome(
             executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
@@ -90,21 +112,19 @@ class News():
         # print(driver.page_source)
 
         soup = BeautifulSoup(driver.page_source,'lxml')
-        # context = soup.select("div.md-example-child.news p.md-cell-item-title")
-        # spantitle = soup.select("div.item-one.item-two > span.title")
+        context = soup.select("div.md-example-child.news p.md-cell-item-title")
+        spantitle = soup.select("div.item-one.item-two > span.title")
 
-        # for text in context:
-        #     print(text.get_text())
+        flashList = []
 
-        # for span in spantitle:
-        #     print(span.get_text())
-
-        context = soup.select("div.md-example-child.news div.md-cell-item-content")
-        # print(context)
         for text in context:
-            # print(''.join(text.select("p.md-cell-item-brief")))
-            print(''.join(text.select("p.md-cell-item-title")))
-                  # .replace(u"\xa0", u""))
+            # print(text.get_text())
+            flashList.append(text.get_text())
+
+        for span in spantitle:
+            # print(span.get_text())
+            flashList.append(span.get_text())
+
 
 
         # 代理需要关闭
@@ -112,11 +132,23 @@ class News():
         server.stop()
         driver.quit()
 
+        # print(flashList)
+
+        return flashList
+
+def test_News_futures():
+    url = 'https://download.eddidapp.com/page/eddid-news/index.html'
+    n = News(url)   
+    flashList = n.get_flash_futures()
+    flash_api = n.get_flashAPI()
+    diff_list = n.same_flashData(flashList, flash_api)
+    # print("对比不一致的内容有: ", diff_list)
+    for diff in diff_list:
+        print("对比不一致的内容有: ", diff)
+
 
 
 if __name__ == '__main__':
-    url = 'https://download.eddidapp.com/page/eddid-news/index.html'
-    n = News(url)
-    n.test_News_futures()
-    # n.get_flash_list()
-
+    test_News_futures()
+    # a = '[nihasd还是辣就好大的]</b>'
+    # print(re.findall(r">(.+)<", a))
