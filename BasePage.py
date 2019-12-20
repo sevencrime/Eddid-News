@@ -5,22 +5,20 @@ from selenium.common.exceptions import *
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-
+class BasePage:
     """
     BasePage封装所有页面都公用的方法
     """
     
     # self只实例本身，相较于类Page而言。
-
-    def __init__(self, selenium_driver, base_url, pagetitle):
+    def __init__(self, selenium_driver, base_url):
         self.driver = selenium_driver
         self.base_url = base_url
-        self.pagetitle = pagetitle
 
     # 通过title断言进入的页面是否正确。
     # 使用title获取当前窗口title，检查输入的title是否在当前title中，返回比较结果（True 或 False）
-    def on_page(self, pagetitle):
-        return pagetitle in self.driver.title
+    # def on_page(self, pagetitle):
+    #     return pagetitle in self.driver.title
 
     # 打开页面，并校验页面链接是否加载正确
     # 以单下划线_开头的方法，在使用import *时，该方法不会被导入，保证该方法为类私有的。
@@ -32,7 +30,7 @@ from selenium.webdriver.support.wait import WebDriverWait
     #     assert self.on_page(pagetitle), u"打开开页面失败 %s" % url
 
 
-    def browser(self, url, pagetitle, num = 0):
+    def browser(self, url, num = 0):
         # driver.get 保护罩,防止打开浏览器超时
         try:
             main_win = self.driver.current_window_handle #得到主窗口句柄
@@ -48,7 +46,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
             self.driver.get(url)
             self.driver.maximize_window()
-            assert self.on_page(pagetitle), u"打开开页面失败 %s" % url
+            # assert self.on_page(pagetitle), u"打开开页面失败 %s" % url
 
         except TimeoutException:
             if num == 3:
@@ -69,7 +67,7 @@ from selenium.webdriver.support.wait import WebDriverWait
     # 定义open方法，调用_open()进行打开链接
     def open(self):
         # self._open(self.base_url, self.pagetitle)
-        self.browser(self.base_url, self.pagetitle)
+        self.browser(self.base_url)
 
     # 重写元素定位方法
     def find_element(self, *loc):
