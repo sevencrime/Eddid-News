@@ -6,7 +6,7 @@ import re
 import datetime
 
 def get_flashAPI(channel, max_time=None):
-    url = "http://114.55.249.227:8080/eddid/flash_list"
+    api_url = "http://114.55.249.227:8080/eddid/flash_list"
     api_flashList = []
     data = {}
     data['channel'] = channel
@@ -14,7 +14,7 @@ def get_flashAPI(channel, max_time=None):
         data['max_time'] = max_time
 
     print("正在请求flash_list接口")
-    resp = requests.get(url, params=data).json()
+    resp = requests.get(api_url, params=data).json()
     for res in resp['data']:
         # print(res['data'])
         if 'content' in res['data'].keys():
@@ -36,3 +36,12 @@ def get_flashAPI(channel, max_time=None):
 
 
 
+def bank_report(category):
+    api_url = 'http://114.55.249.227:9000/v2/bank_report'
+    data = []
+    data['category'] = category
+
+    resp = requests.post(api_url, data=data).json()
+
+
+    return resp

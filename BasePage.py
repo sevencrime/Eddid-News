@@ -57,7 +57,7 @@ class BasePage:
                 if handle != main_win:
                     # 句柄不等于主窗口,即是保护罩界面,则重新调用
                     self.driver.switch_to_window(handle)
-                    self.browser(url, pagetitle, num+1)
+                    self.browser(url, num+1)
                 else:
                     # 句柄等于主窗口, 关闭窗口
                     print("切换保护罩")
