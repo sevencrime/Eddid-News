@@ -36,12 +36,18 @@ def get_flashAPI(channel, max_time=None):
 
 
 
-def bank_report(category):
+def bank_report(category, date=None):
     api_url = 'http://114.55.249.227:9000/v2/bank_report'
-    data = []
+    data = {}
     data['category'] = category
+    if date != None:
+        data['date'] = date
 
     resp = requests.post(api_url, data=data).json()
-
+    print(resp)
 
     return resp
+
+
+if __name__ == '__main__':
+    bank_report("hk")

@@ -11,18 +11,12 @@ from CommonsTool import wait_loading
 
 class Bank_Report(BasePage):
 
-    def get_bank_report_hk(self):
-        self.open()
-        bankreport_loc = (By.XPATH, '//a[contains(text(), "投行报告")]')
-        # 点击投行报告
-        self.find_element(*bankreport_loc).click()
-        wait_loading(self.driver)
-
+    def bankReport_lxml_parse(self):
         # 解析网页
         soup = BeautifulSoup(self.driver.page_source,'lxml')
         tablelist = soup.select("div.list.container  tbody > tr")
 
-        bankReportList = []
+        lxmlList = []
         for tr in tablelist:
             trDict = {}
             # for td in tr.select("td"):
@@ -35,9 +29,24 @@ class Bank_Report(BasePage):
             trDict['latest_target_price'] = tr.select("td")[3].get_text().replace("  ", "").split("\n\n")[1].replace("\n", "")
             trDict['institution'] = tr.select("td")[4].get_text()
 
-            bankReportList.append(trDict)
+            lxmlList.append(trDict)
 
-        print(bankReportList)
+        return lxmlList
 
-        return bankReportList
+    def get_bank_report_hk(self):
+
+        self.open()
+        bankreport_loc = (By.XPATH, '//a[contains(text(), "投行报告")]')
+        # 点击投行报告
+        self.find_element(*bankreport_loc).click()
+        wait_loading(self.driver)
+        bankReportList = self.bankReport_lxml_parse()
+
+        # 点击加载更多按钮
+        add_btn = driver.find_element_by_xpath('//button')
+        self.scrollinto(add_btn)
+        wait_loading(driver)
+        add_bankReportList = self.bankReport_lxml_parse()
+
+        return bankReportList, add_bankReportList
 

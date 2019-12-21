@@ -7,10 +7,10 @@ from GET_New_flash import News_Flash
 from GET_News_bankReport import Bank_Report
 from News_API import *
 
+url = 'https://download.eddidapp.com/page/eddid-news/index.html'
 
 def test_flash_futures(driver):
     # 快讯-期货
-    url = 'https://download.eddidapp.com/page/eddid-news/index.html'
     n = News_Flash(driver, url)   
     flashList, addflashList= n.get_flash_futures()
     flash_api, lasttime = get_flashAPI(channel=-8200)
@@ -23,7 +23,6 @@ def test_flash_futures(driver):
 
 def test_flash_HK(driver):
     # 快讯 -港美股
-    url = 'https://download.eddidapp.com/page/eddid-news/index.html'
     n = News_Flash(driver, url)   
     flashList, addflashList= n.get_flash_HK()
     flash_api, lasttime = get_flashAPI(channel=3)
@@ -34,9 +33,15 @@ def test_flash_HK(driver):
     diff_list = same_flashData(addflashList, flash_api+newflash_api)
 
 def test_bankReport_hk(driver):
-    url = 'https://download.eddidapp.com/page/eddid-news/index.html'
+    # 实例化
     br = Bank_Report(driver, url)
-    br.get_bank_report_hk()
+    # 开始获取投行报告页面的数据
+    bankReportList, add_bankReportList = br.get_bank_report_hk()
+    # 请求投行报告接口
+
+    # 第二次获取投行报告接口
+
+    # 对比数据
 
 
 if __name__ =='__main__':

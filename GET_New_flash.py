@@ -64,7 +64,6 @@ class News_Flash(BasePage):
         print("快讯-港美股页面返回的数据条数为 : {}".format(len(flashList)))
 
         add_btn = driver.find_element_by_xpath('//button')
-
         # 点击加载更多按钮
         print("快讯-港美股点击加载更多按钮")
         self.scrollinto(add_btn)
