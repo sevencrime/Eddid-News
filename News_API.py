@@ -51,7 +51,16 @@ def bank_report_API(category):
 
     return resp['data']['list']
 
+def calendar_data_API(nowtime):
+    api_url = 'http://114.55.249.227:9000/v2/data'
+    payload = {
+        "date" : nowtime,
+        "category" : ["hk", "us", "cj", "qh"]
+    }
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
+
+    return resp['data']
 
 if __name__ == '__main__':
     # bank_report_API(["hk"])
-    a = ''
+    calendar_data_API(datetime.datetime.now().strftime("%Y%m%d"))

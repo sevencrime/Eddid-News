@@ -11,6 +11,21 @@ from CommonsTool import wait_loading
 
 class News_Flash(BasePage):
 
+    def same_flashData(self, flashdata, flashaip):
+        print("正在对比数据")
+        diff_list = []
+        for d in flashdata:
+            try:
+                assert d in flashaip
+            except AssertionError:
+                print("不一致的值为: {}".format(d))
+                diff_list.append(d)
+                continue
+
+        if diff_list == []:
+            print("数据一致")
+        return diff_list
+
     def lxml_parse(self, driver):
         print("解析网页数据")
         soup = BeautifulSoup(driver.page_source,'lxml')
