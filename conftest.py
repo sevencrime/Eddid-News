@@ -12,7 +12,7 @@ from CommonsTool import wait_loading
 def driver():
     chrome_options = Options()
     # 静默模式, 不显示浏览器
-    chrome_options.add_argument('headless')
+    # chrome_options.add_argument('headless')
 
     driver = webdriver.Chrome(
         executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',

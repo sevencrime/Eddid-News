@@ -20,7 +20,7 @@ class Bank_Report(BasePage):
         for tr in tablelist:
             trDict = {}
             trDict['pub_time'] = tr.select("td")[0].get_text()
-            trDict['name'] = tr.select("td")[1].get_text()
+            trDict['name'] = tr.select("td")[1].get_text().split(" ")
             trDict['previous_rating'] = tr.select("td")[2].get_text().replace("  ", "").split("\n\n")[0].replace("\n", "")
             trDict['latest_rating'] = tr.select("td")[2].get_text().replace("  ", "").split("\n\n")[1].replace("\n", "")
             trDict['previous_target_price'] = tr.select("td")[3].get_text().replace("  ", "").split("\n\n")[0].replace("\n", "")
@@ -44,7 +44,7 @@ class Bank_Report(BasePage):
         print("投行报告初始长度为: {}".format(len(bankReportList)))
 
         # 点击加载更多按钮
-        add_btn = driver.find_element_by_xpath('//button')
+        add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
         self.scrollinto(add_btn)
         wait_loading(driver)
         add_bankReportList = self.bankReport_lxml_parse()
@@ -70,8 +70,9 @@ class Bank_Report(BasePage):
         bankReportList = self.bankReport_lxml_parse()
         print("美股-投行报告初始长度为: {}".format(len(bankReportList)))
 
+        import pdb; pdb.set_trace()
         # 点击加载更多按钮
-        add_btn = driver.find_element_by_xpath('//button')
+        add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
         self.scrollinto(add_btn)
         wait_loading(driver)
         add_bankReportList = self.bankReport_lxml_parse()

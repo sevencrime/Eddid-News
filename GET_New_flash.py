@@ -34,7 +34,7 @@ class News_Flash(BasePage):
         flashList = self.lxml_parse(driver)
         print("页面返回的数据条数为 : {}".format(len(flashList)))
 
-        add_btn = driver.find_element_by_xpath('//button')
+        add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
 
         # 点击加载更多按钮
         print("开始点击加载更多按钮")
@@ -64,7 +64,7 @@ class News_Flash(BasePage):
         flashList = self.lxml_parse(driver)
         print("快讯-港美股页面返回的数据条数为 : {}".format(len(flashList)))
 
-        add_btn = driver.find_element_by_xpath('//button')
+        add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
         # 点击加载更多按钮
         print("快讯-港美股点击加载更多按钮")
         self.scrollinto(add_btn)

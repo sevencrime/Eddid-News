@@ -5,9 +5,13 @@ import pytest
 from CommonsTool import *
 from GET_New_flash import News_Flash
 from GET_News_bankReport import Bank_Report
+from GET_News_calendar import News_calendar
 from News_API import *
 
-url = 'https://download.eddidapp.com/page/eddid-news/index.html'
+# 生产环境
+# url = 'https://download.eddidapp.com/page/eddid-news/index.html'
+# uat环境
+url = 'https://download.eddidapp.com/page/eddid-news-dev/index.html'
 
 def test_flash_futures(driver):
     # 快讯-期货
@@ -36,7 +40,7 @@ def test_bankReport_hk(driver):
     # 实例化
     br = Bank_Report(driver, url)
     # 开始获取投行报告页面的数据
-    bankReportList, add_bankReportList = br.get_bank_report_hk(driver)
+    bankReportList, add_bankReportList = br.get_bank_report_hk()
     # 请求投行报告接口, 返回全部数据
     API_bankReportlist = bank_report_API(category=["hk"])
     # 对比数据
@@ -47,7 +51,7 @@ def test_bankReport_us(driver):
     # 实例化
     br = Bank_Report(driver, url)
     # 开始获取投行报告页面的数据
-    bankReportList, add_bankReportList = br.get_bank_report_us(driver)
+    bankReportList, add_bankReportList = br.get_bank_report_us()
     # 请求投行报告接口, 返回全部数据
     API_bankReportlist = bank_report_API(category=["us"])
     # 对比数据
@@ -55,6 +59,11 @@ def test_bankReport_us(driver):
     same_listofdict(add_bankReportList, API_bankReportlist)
 
 
+def test_calendar_date(driver):
+    calendar = News_calendar(driver, url)
+
+    calendar.get_calendar_data(driver)
+
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py"])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_date"])
