@@ -4,6 +4,12 @@
 import requests 
 import re
 import datetime
+import json
+
+headers = {
+    'Content-Type' : 'application/json'
+}
+
 
 def get_flashAPI(channel, max_time=None):
     api_url = "http://114.55.249.227:8080/eddid/flash_list"
@@ -36,18 +42,16 @@ def get_flashAPI(channel, max_time=None):
 
 
 
-def bank_report(category, date=None):
+def bank_report_API(category):
     api_url = 'http://114.55.249.227:9000/v2/bank_report'
-    data = {}
-    data['category'] = category
-    if date != None:
-        data['date'] = date
+    payload = {}
+    payload['category'] = category
 
-    resp = requests.post(api_url, data=data).json()
-    print(resp)
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
 
-    return resp
+    return resp['data']['list']
 
 
 if __name__ == '__main__':
-    bank_report("hk")
+    # bank_report_API(["hk"])
+    a = ''

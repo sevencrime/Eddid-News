@@ -19,8 +19,6 @@ class Bank_Report(BasePage):
         lxmlList = []
         for tr in tablelist:
             trDict = {}
-            # for td in tr.select("td"):
-            #     print(t   d.get_text())
             trDict['pub_time'] = tr.select("td")[0].get_text()
             trDict['name'] = tr.select("td")[1].get_text()
             trDict['previous_rating'] = tr.select("td")[2].get_text().replace("  ", "").split("\n\n")[0].replace("\n", "")
@@ -33,20 +31,53 @@ class Bank_Report(BasePage):
 
         return lxmlList
 
-    def get_bank_report_hk(self):
-
+    def get_bank_report_hk(self, driver):
+        # 打开浏览器
         self.open()
-        bankreport_loc = (By.XPATH, '//a[contains(text(), "投行报告")]')
+        wait_loading(self.driver)
         # 点击投行报告
+        bankreport_loc = (By.XPATH, '//a[contains(text(), "投行报告")]')
         self.find_element(*bankreport_loc).click()
         wait_loading(self.driver)
+
         bankReportList = self.bankReport_lxml_parse()
+        print("投行报告初始长度为: {}".format(len(bankReportList)))
 
         # 点击加载更多按钮
         add_btn = driver.find_element_by_xpath('//button')
         self.scrollinto(add_btn)
         wait_loading(driver)
         add_bankReportList = self.bankReport_lxml_parse()
+        print("加载更多后投行报告初始长度为: {}".format(len(add_bankReportList)))
+
+        driver.quit()
+
+        return bankReportList, add_bankReportList
+
+    def get_bank_report_us(self, driver):
+        # 打开浏览器
+        self.open()
+        wait_loading(self.driver)
+        # 点击投行报告
+        bankreport_loc = (By.XPATH, '//a[contains(text(), "投行报告")]')
+        self.find_element(*bankreport_loc).click()
+        wait_loading(self.driver)
+
+        us_loc = (By.XPATH, '//a[contains(text(), "美股目标价")]')
+        self.find_element(*us_loc).click()
+        wait_loading(self.driver)
+
+        bankReportList = self.bankReport_lxml_parse()
+        print("美股-投行报告初始长度为: {}".format(len(bankReportList)))
+
+        # 点击加载更多按钮
+        add_btn = driver.find_element_by_xpath('//button')
+        self.scrollinto(add_btn)
+        wait_loading(driver)
+        add_bankReportList = self.bankReport_lxml_parse()
+        print("加载更多后美股-投行报告初始长度为: {}".format(len(add_bankReportList)))
+
+        driver.quit()
 
         return bankReportList, add_bankReportList
 

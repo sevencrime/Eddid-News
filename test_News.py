@@ -36,13 +36,25 @@ def test_bankReport_hk(driver):
     # 实例化
     br = Bank_Report(driver, url)
     # 开始获取投行报告页面的数据
-    bankReportList, add_bankReportList = br.get_bank_report_hk()
-    # 请求投行报告接口
-
-    # 第二次获取投行报告接口
-
+    bankReportList, add_bankReportList = br.get_bank_report_hk(driver)
+    # 请求投行报告接口, 返回全部数据
+    API_bankReportlist = bank_report_API(category=["hk"])
     # 对比数据
+    same_listofdict(bankReportList, API_bankReportlist)
+    same_listofdict(add_bankReportList, API_bankReportlist)
+
+def test_bankReport_us(driver):
+    # 实例化
+    br = Bank_Report(driver, url)
+    # 开始获取投行报告页面的数据
+    bankReportList, add_bankReportList = br.get_bank_report_us(driver)
+    # 请求投行报告接口, 返回全部数据
+    API_bankReportlist = bank_report_API(category=["us"])
+    # 对比数据
+    same_listofdict(bankReportList, API_bankReportlist)
+    same_listofdict(add_bankReportList, API_bankReportlist)
+
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "test_News.py::test_bankReport_hk"])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py"])

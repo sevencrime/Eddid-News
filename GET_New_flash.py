@@ -55,6 +55,7 @@ class News_Flash(BasePage):
         print("开始请求资源网站")
         driver = self.driver
         self.open()
+        wait_loading(driver)
 
         # print(driver.page_source)
         self.find_element(*(By.XPATH, '//a[contains(text(), "港美股")]')).click()
