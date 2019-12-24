@@ -13,6 +13,9 @@ def driver():
     chrome_options = Options()
     # 静默模式, 不显示浏览器
     # chrome_options.add_argument('headless')
+    # 设置窗口大小为iPhone X
+    mobileEmulation = {'deviceName': 'iPhone X'}
+    chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
 
     driver = webdriver.Chrome(
         executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',

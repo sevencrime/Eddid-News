@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import random
+
 import pytest
 
 from GET_New_flash import News_Flash
@@ -61,10 +63,39 @@ def test_bankReport_us(driver):
 def test_calendar_date(driver):
     calendar = News_calendar(driver, url)
 
-    calendardataList = calendar.get_calendar_data(driver)
-    dataAPI_list = calendar_data_API(datetime.datetime.now().strftime("%Y%m%d"))
+    nowtime = datetime.datetime.now().strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data()
+    # 调用接口
+    dataAPI_list = calendar_data_API(nowtime)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_data(calendardataList, dataAPI_list)
+
+def test_calendar_before(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    startTime = (nowtime - datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_data_API(startTime)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_data(calendardataList, dataAPI_list)
+
+def test_calendar_after(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    print("对比的日期为 : {}".format(startTime))
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_data_API(startTime)
+    # print("接口返回的数据为: {}".format(dataAPI_list))
     calendar.same_data(calendardataList, dataAPI_list)
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_date"])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_after"])

@@ -55,10 +55,9 @@ def calendar_data_API(nowtime):
     api_url = 'http://114.55.249.227:9000/v2/data'
     payload = {
         "date" : nowtime,
-        "category" : ["hk", "us", "cj", "qh"]
+        "category" : ["hk", "us", "cj"] #不要"qh"
     }
     resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
-
     return resp['data']
 
 if __name__ == '__main__':
