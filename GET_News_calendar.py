@@ -19,12 +19,27 @@ class News_calendar(BasePage):
         }
         assert len(pagelist) == len(apilist)
         for i in range(len(pagelist)):
+            unit = '' if apilist[i]['unit'] == None else apilist[i]['unit'] #接口返回的unit字段(单位)
+
             assert pagelist[i]['pub_time'] == apilist[i]['pub_time']
             assert pagelist[i]['star'] == apilist[i]['star']
             assert pagelist[i]['title'] == (apilist[i]['country'] + apilist[i]['time_period'] + apilist[i]['indicator_name'])
-            assert (None if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == (apilist[i]['previous'] + apilist[i]['unit'] if apilist[i]['previous'] != None else apilist[i]['previous'])
-            assert (None if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == (apilist[i]['consensus'] + apilist[i]['unit'] if apilist[i]['consensus'] != None else apilist[i]['consensus'])
-            assert (None if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == (apilist[i]['actual'] + apilist[i]['unit'] if apilist[i]['actual'] != None else apilist[i]['actual'])
+
+            if ('' if apilist[i]['previous'] == None else apilist[i]['previous']) != '':
+                assert ('' if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == ('' if apilist[i]['previous'] == None else apilist[i]['previous']) + unit
+            else:
+                assert ('' if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == ''
+
+            if ('' if apilist[i]['consensus'] == None else apilist[i]['consensus']) != '':
+                assert ('' if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == ('' if apilist[i]['consensus'] == None else apilist[i]['consensus']) + unit
+            else:
+                assert ('' if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == ''
+
+            if ('' if apilist[i]['actual'] == None else apilist[i]['actual']) != '':
+                assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ('' if apilist[i]['actual'] == None else apilist[i]['actual']) + unit
+            else:
+                assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ''
+
             if pagelist[i]['the_affect'] != "未公布":
                 assert pagelist[i]['the_affect'].find(the_affect_CHN[apilist[i]['the_affect']]) != -1
 
