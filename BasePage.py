@@ -111,6 +111,15 @@ class BasePage:
             print(u"%s 页面中未能找到 %s 元素" % (self, loc))
 
     def scrollinto(self, loc):
-        import pdb; pdb.set_trace()
-        self.script("arguments[0].scrollIntoView();", loc)
+        '''
+
+        :param loc: element
+        :param opt_center:  一个 Boolean 类型的值，默认为true:
+                            如果为true，则元素将在其所在滚动区的可视区域中居中对齐。
+                            如果为false，则元素将与其所在滚动区的可视区域最近的边缘对齐。 根据可见区域最靠近元素的哪个边缘，元素的顶部将与可见区域的顶部边缘对准，或者元素的底部边缘将与可见区域的底部边缘对准。
+        :return:
+        '''
+        # self.script("arguments[0].scrollIntoView();", loc)
+        # Element.scrollIntoViewIfNeeded（）方法用来将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。 如果该元素已经在浏览器窗口的可见区域内，则不会发生滚动。 此方法是标准的Element.scrollIntoView()方法的专有变体。
+        self.script("arguments[0].scrollIntoViewIfNeeded();", loc)
         self.script("arguments[0].click();", loc)

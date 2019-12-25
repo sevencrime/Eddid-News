@@ -41,7 +41,7 @@ class News_calendar(BasePage):
                 assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ''
 
             if pagelist[i]['the_affect'] != "未公布":
-                assert pagelist[i]['the_affect'].find(the_affect_CHN[apilist[i]['the_affect']]) != -1
+                assert pagelist[i]['the_affect'].find(the_affect_CHN['null' if apilist[i]['the_affect'] == None else apilist[i]['the_affect']]) != -1
 
     def calendar_lxml_parse(self, calendartime):
 
@@ -76,7 +76,7 @@ class News_calendar(BasePage):
         if calendartime != None:
             print("点击的日期为 : {} ".format(calendartime))
             active_calendar = self.driver.find_element_by_xpath('//nav[@class="md-tab-bar tab-day"]//div[@class="day-sub" and text()="{time}"]'.format(time=str(int(calendartime[-2:]))))
-            self.script("arguments[0].scrollIntoView();", active_calendar)
+            self.script("arguments[0].scrollIntoViewIfNeeded();", active_calendar)
             active_calendar.click()
             wait_loading(self.driver)
 

@@ -9,6 +9,7 @@ import json
 headers = {
     'Content-Type' : 'application/json'
 }
+requests.adapters.DEFAULT_RETRIES = 5
 
 
 def get_flashAPI(channel, max_time=None):
