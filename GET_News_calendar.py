@@ -85,6 +85,11 @@ class News_calendar(BasePage):
             assert pagelist[i]['star'] == apilist[i]['star']
             assert pagelist[i]['event_content'] == apilist[i]['event_content']
 
+    def same_holiday(self, pagelist, apilist):
+        assert len(pagelist) == len(apilist)
+        for i in range(len(pagelist)):
+            assert pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']
+            assert pagelist[i]['title'] == apilist[i]['exchange_name'] + apilist[i]['rest_note']
 
     def calendar_lxml_parse(self, calendartime, calendartab="数据"):
 
@@ -129,6 +134,13 @@ class News_calendar(BasePage):
 
                 lxmlList.append(item_dict)
 
+        elif calendartab == "假期" :
+            for item in tablelist:
+                item_dict = {}
+                item_dict['name'] = item.select("div.item-one > span")[0].get_text()
+                item_dict['title'] = item.select("div.item-two > span")[0].get_text()
+                lxmlList.append(item_dict)
+
         return lxmlList
 
     def get_calendar_data(self, calendartab="数据", calendartime=None):
@@ -162,7 +174,7 @@ class News_calendar(BasePage):
             wait_loading(self.driver)
 
         calendardataList = self.calendar_lxml_parse(calendartime, calendartab)
-        print("日历-数据的长度为: {}".format(len(calendardataList)))
+        print("数据的长度为: {}".format(len(calendardataList)))
         print("页面返回的数据为: {}".format(calendardataList))
 
         self.driver.quit()

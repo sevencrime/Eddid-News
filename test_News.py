@@ -18,24 +18,25 @@ def test_flash_futures(driver):
     # 快讯-期货
     n = News_Flash(driver, url)   
     flashList, addflashList= n.get_flash_futures()
-    flash_api, lasttime = get_flashAPI(channel=-8200)
-    diff_list = n.same_flashData(flashList, flash_api)
+    flash_api_list = get_flashAPI(channel=-8200)
+    n.same_flashData(flashList, flash_api_list['data'])
     # print("对比不一致的内容有: ", diff_list)
     print("********************************")
-    newflash_api, lasttime = get_flashAPI(channel=-8200, max_time = lasttime)
-    diff_list = n.same_flashData(addflashList, flash_api+newflash_api)
+    newflash_api_list = get_flashAPI(channel=-8200, max_time = flash_api_list['data'][-1]['time'])
+    n.same_flashData(addflashList, flash_api_list['data'] + newflash_api_list['data'])
 
 
 def test_flash_HK(driver):
     # 快讯 -港美股
     n = News_Flash(driver, url)   
     flashList, addflashList= n.get_flash_HK()
-    flash_api, lasttime = get_flashAPI(channel=3)
-    diff_list = n.same_flashData(flashList, flash_api)
+    flash_api_list = get_flashAPI(channel=3)
+    n.same_flashData(flashList, flash_api_list['data'])
     # print("对比不一致的内容有: ", diff_list)
     print("********************************")
-    newflash_api, lasttime = get_flashAPI(channel=3, max_time = lasttime)
-    diff_list = n.same_flashData(addflashList, flash_api+newflash_api)
+    newflash_api_list = get_flashAPI(channel=3, max_time = flash_api_list['data'][-1]['time'])
+    n.same_flashData(addflashList, flash_api_list['data'] + newflash_api_list['data'])
+
 
 def test_bankReport_hk(driver):
     # 实例化
@@ -183,8 +184,48 @@ def test_calendar_stock_after(driver):
     # print("接口返回的数据为: {}".format(dataAPI_list))
     calendar.same_data(calendardataList, dataAPI_list, stock=True)
 
+# 日历-假期-当天
+def test_calendar_holiday_date(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now().strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="假期")
+    # 调用接口
+    dataAPI_list = calendar_holiday_API(nowtime)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_holiday(calendardataList, dataAPI_list)
+
+# 日历-假期-以前日期
+def test_calendar_holiday_before(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    # startTime = (nowtime - datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    # 暂时写死, 不能滑动
+    startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="假期", calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_holiday_API(startTime)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_holiday(calendardataList, dataAPI_list)
+
+# 日历-假期-未来日期
+def test_calendar_holiday_after(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    print("对比的日期为 : {}".format(startTime))
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="假期", calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_holiday_API(startTime)
+    # print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_holiday(calendardataList, dataAPI_list)
 
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_stock_after"])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_flash_HK"])
