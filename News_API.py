@@ -52,14 +52,29 @@ def bank_report_API(category):
 
     return resp['data']['list']
 
-def calendar_data_API(nowtime):
+def calendar_data_API(nowtime, stock=False):
     api_url = 'http://114.55.249.227:9000/v2/data'
+    payload = {
+        "date" : nowtime,
+        "category" : ["hk", "us", "cj"] #不要"qh"
+    }
+    if stock:
+        # 美港财报
+        payload['data_type'] = "stock"
+
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
+    return resp['data']
+
+def calendar_event_API(nowtime):
+    api_url = 'http://114.55.249.227:9000/v2/event'
     payload = {
         "date" : nowtime,
         "category" : ["hk", "us", "cj"] #不要"qh"
     }
     resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
     return resp['data']
+
+
 
 if __name__ == '__main__':
     # bank_report_API(["hk"])

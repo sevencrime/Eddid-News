@@ -59,7 +59,7 @@ def test_bankReport_us(driver):
     br.same_listofdict(bankReportList, API_bankReportlist)
     br.same_listofdict(add_bankReportList, API_bankReportlist)
 
-
+# 日历-数据-当天
 def test_calendar_date(driver):
     calendar = News_calendar(driver, url)
 
@@ -71,6 +71,7 @@ def test_calendar_date(driver):
     print("接口返回的数据为: {}".format(dataAPI_list))
     calendar.same_data(calendardataList, dataAPI_list)
 
+# 日历-数据-以前日期
 def test_calendar_before(driver):
     calendar = News_calendar(driver, url)
 
@@ -85,6 +86,7 @@ def test_calendar_before(driver):
     print("接口返回的数据为: {}".format(dataAPI_list))
     calendar.same_data(calendardataList, dataAPI_list)
 
+# 日历-数据-未来日期
 def test_calendar_after(driver):
     calendar = News_calendar(driver, url)
 
@@ -99,5 +101,90 @@ def test_calendar_after(driver):
     calendar.same_data(calendardataList, dataAPI_list)
 
 
+# 日历-财经事件-当天
+def test_calendar_event_date(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now().strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="财经事件")
+    # 调用接口
+    dataAPI_list = calendar_event_API(nowtime)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_event(calendardataList, dataAPI_list)
+
+# 日历-财经事件-以前日期
+def test_calendar_event_before(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now().strftime("%Y%m%d")
+    # startTime = (nowtime - datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    # 暂时写死, 不能滑动
+    startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="财经事件", calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_event_API(startTime)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_event(calendardataList, dataAPI_list)
+
+# 日历-财经事件-未来日期
+def test_calendar_event_after(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    print("对比的日期为 : {}".format(startTime))
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="财经事件", calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_event_API(startTime)
+    # print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_event(calendardataList, dataAPI_list)
+
+# 日历-美港财报-当天
+def test_calendar_stock_date(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now().strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="美港财报")
+    # 调用接口
+    dataAPI_list = calendar_data_API(nowtime, stock=True)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_data(calendardataList, dataAPI_list, stock=True)
+
+# 日历-美港财报-以前日期
+def test_calendar_stock_before(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    # startTime = (nowtime - datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    # 暂时写死, 不能滑动
+    startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="美港财报", calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_data_API(startTime, stock=True)
+    print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_data(calendardataList, dataAPI_list, stock=True)
+
+# 日历-美港财报-未来日期
+def test_calendar_stock_after(driver):
+    calendar = News_calendar(driver, url)
+
+    nowtime = datetime.datetime.now()
+    startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
+    print("对比的日期为 : {}".format(startTime))
+    # 爬页面
+    calendardataList = calendar.get_calendar_data(calendartab="美港财报", calendartime=startTime)
+    # 调用接口
+    dataAPI_list = calendar_data_API(startTime, stock=True)
+    # print("接口返回的数据为: {}".format(dataAPI_list))
+    calendar.same_data(calendardataList, dataAPI_list, stock=True)
+
+
+
+
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_before"])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_stock_after"])
