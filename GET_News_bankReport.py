@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -18,14 +19,10 @@ class Bank_Report(BasePage):
                                                                          "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
             assert pagelist[i]['name'][0] in apilist[i]['name']
             assert pagelist[i]['name'][1] in apilist[i]['name']
-            assert (None if pagelist[i]['previous_rating'] == '' else pagelist[i]['previous_rating']) == apilist[i][
-                'previous_rating']
-            assert (None if pagelist[i]['latest_rating'] == '' else pagelist[i]['latest_rating']) == apilist[i][
-                'latest_rating']
-            assert (None if pagelist[i]['previous_target_price'] == '' else pagelist[i]['previous_target_price']) == \
-                   apilist[i]['previous_target_price']
-            assert (None if pagelist[i]['latest_target_price'] == '' else pagelist[i]['latest_target_price']) == \
-                   apilist[i]['latest_target_price']
+            assert pagelist[i]['previous_rating'] == (apilist[i]['previous_rating'] or '')
+            assert pagelist[i]['latest_rating'] == (apilist[i]['latest_rating'] or '')
+            assert pagelist[i]['previous_target_price'] == (apilist[i]['previous_target_price'] or '')
+            assert pagelist[i]['latest_target_price'] == (apilist[i]['latest_target_price'] or '')
             assert pagelist[i]['institution'] == apilist[i]['institution']
 
     def bankReport_lxml_parse(self):
@@ -48,7 +45,7 @@ class Bank_Report(BasePage):
 
         return lxmlList
 
-    def get_bank_report_hk(self, driver):
+    def get_bank_report_hk(self):
         # 打开浏览器
         self.open()
         wait_loading(self.driver)
@@ -61,17 +58,19 @@ class Bank_Report(BasePage):
         print("投行报告初始长度为: {}".format(len(bankReportList)))
 
         # 点击加载更多按钮
-        add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
-        self.scrollinto(add_btn)
-        wait_loading(driver)
+        add_btn = self.driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
+        # self.scrollinto(add_btn)
+        self.script("arguments[0].scrollIntoView();", add_btn)
+        ActionChains(self.driver).move_to_element(add_btn).click().perform()
+        wait_loading(self.driver)
         add_bankReportList = self.bankReport_lxml_parse()
         print("加载更多后投行报告初始长度为: {}".format(len(add_bankReportList)))
 
-        driver.quit()
+        self.driver.quit()
 
         return bankReportList, add_bankReportList
 
-    def get_bank_report_us(self, driver):
+    def get_bank_report_us(self):
         # 打开浏览器
         self.open()
         wait_loading(self.driver)
@@ -87,15 +86,17 @@ class Bank_Report(BasePage):
         bankReportList = self.bankReport_lxml_parse()
         print("美股-投行报告初始长度为: {}".format(len(bankReportList)))
 
-        import pdb; pdb.set_trace()
         # 点击加载更多按钮
-        add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
-        self.scrollinto(add_btn)
-        wait_loading(driver)
+        add_btn = self.driver.find_element_by_xpath('//button//div[@class="md-button-content"]')
+        # self.scrollinto(add_btn)
+        self.script("arguments[0].scrollIntoView();", add_btn)
+        ActionChains(self.driver).move_to_element(add_btn).click().perform()
+
+        wait_loading(self.driver)
         add_bankReportList = self.bankReport_lxml_parse()
         print("加载更多后美股-投行报告初始长度为: {}".format(len(add_bankReportList)))
 
-        driver.quit()
+        self.driver.quit()
 
         return bankReportList, add_bankReportList
 

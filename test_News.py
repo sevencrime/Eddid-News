@@ -71,7 +71,7 @@ def test_calendar_date(driver):
 
     nowtime = datetime.datetime.now().strftime("%Y%m%d")
     # 爬页面
-    calendardataList = calendar.get_calendar_data()
+    calendardataList = calendar.get_calendar_data(calendartime=nowtime)
     # 调用接口
     dataAPI_list = calendar_data_API(nowtime)
     print("接口返回的数据为: {}".format(dataAPI_list))
@@ -113,7 +113,7 @@ def test_calendar_event_date(driver):
 
     nowtime = datetime.datetime.now().strftime("%Y%m%d")
     # 爬页面
-    calendardataList = calendar.get_calendar_data(calendartab="财经事件")
+    calendardataList = calendar.get_calendar_data(calendartime=nowtime, calendartab="财经事件")
     # 调用接口
     dataAPI_list = calendar_event_API(nowtime)
     print("接口返回的数据为: {}".format(dataAPI_list))
@@ -123,7 +123,7 @@ def test_calendar_event_date(driver):
 def test_calendar_event_before(driver):
     calendar = News_calendar(driver, url)
 
-    nowtime = datetime.datetime.now().strftime("%Y%m%d")
+    nowtime = datetime.datetime.now()
     # startTime = (nowtime - datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
     # 暂时写死, 不能滑动
     startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
@@ -233,4 +233,4 @@ def test_calendar_holiday_after(driver):
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_flash_HK"])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py"])

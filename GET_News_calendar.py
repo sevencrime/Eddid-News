@@ -27,23 +27,26 @@ class News_calendar(BasePage):
 
                 assert pagelist[i]['title'] == (apilist[i]['country'] + apilist[i]['time_period'] + apilist[i]['indicator_name'])
 
-                if ('' if apilist[i]['previous'] == None else apilist[i]['previous']) != '':
-                    assert ('' if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == ('' if apilist[i]['previous'] == None else apilist[i]['previous']) + unit
+                # 前值
+                if (apilist[i]['previous'] or '') != '':
+                    assert pagelist[i]['previous'] == apilist[i]['previous'] + unit
                 else:
                     assert ('' if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == ''
 
-                if ('' if apilist[i]['consensus'] == None else apilist[i]['consensus']) != '':
-                    assert ('' if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == ('' if apilist[i]['consensus'] == None else apilist[i]['consensus']) + unit
+                # 预测值
+                if (apilist[i]['consensus'] or '') != '':
+                    assert pagelist[i]['consensus'] == apilist[i]['consensus'] + unit
                 else:
                     assert ('' if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == ''
 
-                if ('' if apilist[i]['actual'] == None else apilist[i]['actual']) != '':
-                    assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ('' if apilist[i]['actual'] == None else apilist[i]['actual']) + unit
+                # 公布值
+                if (apilist[i]['actual'] or '') != '':
+                    assert pagelist[i]['actual'] == apilist[i]['actual'] + unit
                 else:
                     assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ''
 
                 if pagelist[i]['the_affect'] != "未公布":
-                    assert pagelist[i]['the_affect'].find(the_affect_CHN['null' if apilist[i]['the_affect'] == None else apilist[i]['the_affect']]) != -1
+                    assert pagelist[i]['the_affect'] == the_affect_CHN[apilist[i]['the_affect']]
 
         elif stock:
             for i in range(len(pagelist)):
@@ -54,27 +57,23 @@ class News_calendar(BasePage):
 
                 assert pagelist[i]['title'] == (apilist[i]['indicator_name'] + apilist[i]['time_period'])
 
-                if ('' if apilist[i]['previous'] == None else apilist[i]['previous']) != '':
-                    assert ('' if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == unit + (
-                        '' if apilist[i]['previous'] == None else apilist[i]['previous'])
+                if (apilist[i]['previous'] or '') != '':
+                    assert pagelist[i]['previous'] == unit + apilist[i]['previous']
                 else:
                     assert ('' if '--' in pagelist[i]['previous'] else pagelist[i]['previous']) == ''
 
-                if ('' if apilist[i]['consensus'] == None else apilist[i]['consensus']) != '':
-                    assert ('' if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == unit + (
-                        '' if apilist[i]['consensus'] == None else apilist[i]['consensus'])
+                if (apilist[i]['consensus'] or '') != '':
+                    assert pagelist[i]['consensus'] == unit + apilist[i]['consensus']
                 else:
                     assert ('' if '--' in pagelist[i]['consensus'] else pagelist[i]['consensus']) == ''
 
-                if ('' if apilist[i]['actual'] == None else apilist[i]['actual']) != '':
-                    assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == unit + (
-                        '' if apilist[i]['actual'] == None else apilist[i]['actual'])
+                if (apilist[i]['actual'] or '') != '':
+                    assert pagelist[i]['actual'] == unit + apilist[i]['actual']
                 else:
                     assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ''
 
                 if pagelist[i]['the_affect'] != "未公布":
-                    assert pagelist[i]['the_affect'].find(
-                        the_affect_CHN['null' if apilist[i]['the_affect'] == None else apilist[i]['the_affect']]) != -1
+                    assert pagelist[i]['the_affect'] == the_affect_CHN[apilist[i]['the_affect']]
 
 
     def same_event(self, pagelist, apilist):
@@ -110,7 +109,11 @@ class News_calendar(BasePage):
                 item_dict['star'] = len(item.select("div.item-one > span.stars > i.star.stared"))
                 item_dict['title'] = item.select("div.item-two > span")[0].get_text()
                 if calendartab == "数据":
-                    item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()
+                    if item.select("div.item-two > span")[1].get_text() != "未公布":
+                        item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()[:2]
+                    else:
+                        item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()
+
                 elif calendartab == "美港财报":
                     if item.select("div.item-two > span")[1].get_text() == "利多股票" or item.select("div.item-two > span")[1].get_text() == "利空股票":
                         item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()[:2]
@@ -143,7 +146,7 @@ class News_calendar(BasePage):
 
         return lxmlList
 
-    def get_calendar_data(self, calendartab="数据", calendartime=None):
+    def get_calendar_data(self, calendartime=None, calendartab="数据"):
         # 打开浏览器
         self.open()
         wait_loading(self.driver)
