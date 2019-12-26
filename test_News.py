@@ -22,7 +22,10 @@ def test_flash_futures(driver):
     n.same_flashData(flashList, flash_api_list['data'])
     # print("对比不一致的内容有: ", diff_list)
     print("********************************")
-    newflash_api_list = get_flashAPI(channel=-8200, max_time = flash_api_list['data'][-1]['time'])
+    # 获取接口最后一条时间减少一秒
+    strtime = datetime.datetime.strptime(flash_api_list['data'][-1]['time'], "%Y-%m-%d %H:%M:%S")
+    startTime = (strtime - datetime.timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
+    newflash_api_list = get_flashAPI(channel=-8200, max_time = startTime)
     n.same_flashData(addflashList, flash_api_list['data'] + newflash_api_list['data'])
 
 
@@ -34,7 +37,9 @@ def test_flash_HK(driver):
     n.same_flashData(flashList, flash_api_list['data'])
     # print("对比不一致的内容有: ", diff_list)
     print("********************************")
-    newflash_api_list = get_flashAPI(channel=3, max_time = flash_api_list['data'][-1]['time'])
+    strtime = datetime.datetime.strptime(flash_api_list['data'][-1]['time'], "%Y-%m-%d %H:%M:%S")
+    startTime = (strtime - datetime.timedelta(seconds=1)).strftime("%Y-%m-%d %H:%M:%S")
+    newflash_api_list = get_flashAPI(channel=3, max_time = startTime)
     n.same_flashData(addflashList, flash_api_list['data'] + newflash_api_list['data'])
 
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import time
 
 from selenium.common.exceptions import *
 from selenium.webdriver.support import expected_conditions as EC
@@ -123,3 +124,4 @@ class BasePage:
         # Element.scrollIntoViewIfNeeded（）方法用来将不在浏览器窗口的可见区域内的元素滚动到浏览器窗口的可见区域。 如果该元素已经在浏览器窗口的可见区域内，则不会发生滚动。 此方法是标准的Element.scrollIntoView()方法的专有变体。
         self.script("arguments[0].scrollIntoViewIfNeeded();", loc)
         self.script("arguments[0].click();", loc)
+

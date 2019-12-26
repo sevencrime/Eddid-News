@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 
+from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
@@ -27,31 +28,41 @@ class News_Flash(BasePage):
                 assert pagelist[i]['content'] == apilist[i]['data']['country'] + apilist[i]['data']['time_period'] + apilist[i]['data']['name']
 
             try:
+                # previous : 前值
                 assert pagelist[i]['previous'] == apilist[i]['data']['previous'] + apilist[i]['data']['unit']
-                assert pagelist[i]['consensus'] == apilist[i]['data']['consensus'] + apilist[i]['data']['unit']
+
+                # consensus : 预测值
+                if apilist[i]['data']['consensus'] == None:
+                    assert pagelist[i]['consensus'] == '- -'
+                else:
+                    assert pagelist[i]['consensus'] == apilist[i]['data']['consensus'] + apilist[i]['data']['unit']
+
+                # actual : 公布值
                 assert pagelist[i]['actual'] == str(apilist[i]['data']['actual']) + apilist[i]['data']['unit']
                 assert pagelist[i]['start'] == apilist[i]['data']['start']
-                assert pagelist[i]['affect'] == apilist[i]['data']['affect']
             except KeyError:
                 continue
 
+            try:
+                # 利空利多
+                if apilist[i]['data']['affect'] == 0:
+                    if pagelist[i]['actual'] > (pagelist[i]['consensus'] or pagelist[i]['previous']):
+                        assert pagelist[i]['affect'] == '利多'
+                    elif pagelist[i]['actual'] < (pagelist[i]['consensus'] or pagelist[i]['previous']):
+                        assert pagelist[i]['affect'] == '利空'
+
+                elif apilist[i]['data']['affect'] == 1:
+                    if pagelist[i]['actual'] < (pagelist[i]['consensus'] or pagelist[i]['previous']):
+                        assert pagelist[i]['affect'] == '利多'
+                    elif pagelist[i]['actual'] > (pagelist[i]['consensus'] or pagelist[i]['previous']):
+                        assert pagelist[i]['affect'] == '利空'
+
+            except KeyError:
+                continue
 
     def lxml_parse(self, driver):
         print("解析网页数据")
         soup = BeautifulSoup(driver.page_source,'lxml')
-        # context = soup.select("div.md-example-child.news p.md-cell-item-title")
-        # spantitle = soup.select("div.item-one.item-two > span.title")
-        # flashList = []
-        # for text in context:
-        #     # print(text.get_text())
-        #     flashList.append(text.get_text())
-        #
-        # for span in spantitle:
-        #     # print(span.get_text())
-        #     flashList.append(span.get_text())
-        # return flashList
-
-        # import pdb; pdb.set_trace()
         pagetext = soup.select("div.md-example-child.news div.md-cell-item-content")
         flashList = []
         for page in pagetext:
@@ -66,9 +77,9 @@ class News_Flash(BasePage):
                 item_dict['consensus'] = page.select("div.calendar-content span.consensus")[0].get_text()[4:]
                 item_dict['actual'] = page.select("div.calendar-content span.actual")[0].get_text()[4:]
                 item_dict['start'] = len(page.select("div.calendar-content i.star.stared"))
-                item_dict['affect'] = page.select("div.calendar-content span.status.negative")[0].get_text()[:2]
+                item_dict['affect'] = page.select("div.calendar-content span.status")[0].get_text()[:2]
 
-            print(item_dict)
+            # print(item_dict)
             flashList.append(item_dict)
 
         return flashList
@@ -86,15 +97,13 @@ class News_Flash(BasePage):
         # 点击加载更多按钮
         print("开始点击加载更多按钮")
         self.scrollinto(add_btn)
-        # self.script("arguments[0].scrollIntoView();", add_btn)
+        wait_loading(driver)
 
         addflashList = self.lxml_parse(driver)
         print("点击加载更多按钮后页面返回的数据条数为 : {}".format(len(addflashList)))
-
         # print("已经要关闭啦!!!!")
         driver.quit()
 
-        # import pdb; pdb.set_trace
         return flashList, addflashList
 
 
@@ -113,13 +122,15 @@ class News_Flash(BasePage):
         add_btn = driver.find_element_by_xpath('//button//div[@class="md-button-inner"]')
         # 点击加载更多按钮
         print("快讯-港美股点击加载更多按钮")
-        self.scrollinto(add_btn)
-        # self.script("arguments[0].scrollIntoView();", add_btn)
+
+        # 直接点击和使用arguments[0].click()无法点击, 故使用ActionChains, 但需要element先出现在页面上
+        self.script("arguments[0].scrollIntoView();", add_btn)
+        ActionChains(self.driver).move_to_element(add_btn).click().perform()
+
         wait_loading(driver)
 
         addflashList = self.lxml_parse(driver)
         print("快讯-港美股点击加载更多按钮后页面返回的数据条数为 : {}".format(len(addflashList)))
-
         driver.quit()
         
         # import pdb; pdb.set_trace
