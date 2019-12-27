@@ -41,6 +41,10 @@ def driver():
     return driver
 
 @allure.feature("校验快讯-期货的数据")
+@allure.description("affect有值时 : pagelist['content'] == apilist['data']['country'] + apilist['data']['time_period'] + apilist['data']['name']\n\n"
+                    "affect == 0 时, actual > (预测值 or 前值) 为 利多, 反则为利空\n\n"
+                    "affect == 1 时, actual < (预测值 or 前值) 为 利多, 反则为利空"
+                    )
 def test_flash_futures(driver):
     # 快讯-期货
     n = News_Flash(driver, url)
@@ -63,6 +67,10 @@ def test_flash_futures(driver):
         n.same_flashData(addflashList, flash_api_list['data'] + newflash_api_list['data'])
 
 @allure.feature("校验快讯-港美股的数据")
+@allure.description("有利空利多 : pagelist['content'] == apilist['data']['country'] + apilist['data']['time_period'] + apilist['data']['name']\n\n"
+                    "affect == 0 时, actual > (预测值 or 前值) 为 利多, 反则为利空\n\n"
+                    "affect == 1 时, actual < (预测值 or 前值) 为 利多, 反则为利空"
+                    )
 def test_flash_HK(driver):
     # 快讯 -港美股
     n = News_Flash(driver, url)   
@@ -121,6 +129,7 @@ def test_bankReport_us(driver):
 
 # 日历-数据-当天
 @allure.feature("校验日历-数据--当天的数据")
+@allure.description("pagelist[i]['title'] == (apilist[i]['country'] + apilist[i]['time_period'] + apilist[i]['indicator_name'])")
 def test_calendar_date(driver):
     calendar = News_calendar(driver, url)
 
@@ -140,6 +149,7 @@ def test_calendar_date(driver):
 
 # 日历-数据-以前日期
 @allure.feature("校验日历-数据--以前日期的数据")
+@allure.description("pagelist[i]['title'] == (apilist[i]['country'] + apilist[i]['time_period'] + apilist[i]['indicator_name'])")
 def test_calendar_before(driver):
     calendar = News_calendar(driver, url)
 
@@ -162,6 +172,7 @@ def test_calendar_before(driver):
 
 # 日历-数据-未来日期
 @allure.feature("校验日历-数据--未来日期的数据")
+@allure.description("pagelist[i]['title'] == (apilist[i]['country'] + apilist[i]['time_period'] + apilist[i]['indicator_name'])")
 def test_calendar_after(driver):
     calendar = News_calendar(driver, url)
 
@@ -243,6 +254,7 @@ def test_calendar_event_after(driver):
 
 # 日历-美港财报-当天
 @allure.feature("校验日历-美港财报--当天的数据")
+@allure.description("pagelist[i]['title'] == (apilist[i]['indicator_name'] + apilist[i]['time_period'])")
 def test_calendar_stock_date(driver):
     calendar = News_calendar(driver, url)
 
@@ -261,6 +273,7 @@ def test_calendar_stock_date(driver):
 
 # 日历-美港财报-以前日期
 @allure.feature("校验日历-美港财报--以前日期的数据")
+@allure.description("pagelist[i]['title'] == (apilist[i]['indicator_name'] + apilist[i]['time_period'])")
 def test_calendar_stock_before(driver):
     calendar = News_calendar(driver, url)
 
@@ -283,6 +296,7 @@ def test_calendar_stock_before(driver):
 
 # 日历-美港财报-未来日期
 @allure.feature("校验日历-美港财报--未来日期的数据")
+@allure.description("pagelist[i]['title'] == (apilist[i]['indicator_name'] + apilist[i]['time_period'])")
 def test_calendar_stock_after(driver):
     calendar = News_calendar(driver, url)
 
@@ -303,6 +317,8 @@ def test_calendar_stock_after(driver):
 
 # 日历-假期-当天
 @allure.feature("校验日历-假期--当天的数据")
+@allure.description("pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']\n\n"
+                    "pagelist[i]['title'] == apilist[i]['exchange_name'] + apilist[i]['rest_note']")
 def test_calendar_holiday_date(driver):
     calendar = News_calendar(driver, url)
 
@@ -322,6 +338,8 @@ def test_calendar_holiday_date(driver):
 
 # 日历-假期-以前日期
 @allure.feature("校验日历-假期--以前日期的数据")
+@allure.description("pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']\n\n"
+                    "pagelist[i]['title'] == apilist[i]['exchange_name'] + apilist[i]['rest_note']")
 def test_calendar_holiday_before(driver):
     calendar = News_calendar(driver, url)
 
@@ -344,6 +362,8 @@ def test_calendar_holiday_before(driver):
 
 # 日历-假期-未来日期
 @allure.feature("校验日历-假期--未来日期的数据")
+@allure.description("pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']\n\n"
+                    "pagelist[i]['title'] == apilist[i]['exchange_name'] + apilist[i]['rest_note']")
 def test_calendar_holiday_after(driver):
     calendar = News_calendar(driver, url)
 
@@ -365,7 +385,7 @@ def test_calendar_holiday_after(driver):
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v", "test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
