@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 import datetime
 
+import allure
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup  
 from BasePage import BasePage
 from CommonsTool import wait_loading
 from Logging import Logs
+import json
 
 
 class News_calendar(BasePage):
@@ -59,7 +61,7 @@ class News_calendar(BasePage):
                     assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ''
 
                 if pagelist[i]['the_affect'] != "未公布":
-                    assert pagelist[i]['the_affect'] == the_affect_CHN[apilist[i]['the_affect']]
+                    assert pagelist[i]['the_affect'] == the_affect_CHN[(apilist[i]['the_affect'] or 'null')]
 
         elif stock:
             for i in range(len(pagelist)):
@@ -91,7 +93,7 @@ class News_calendar(BasePage):
                     assert ('' if '--' in pagelist[i]['actual'] else pagelist[i]['actual']) == ''
 
                 if pagelist[i]['the_affect'] != "未公布":
-                    assert pagelist[i]['the_affect'] == the_affect_CHN[apilist[i]['the_affect']]
+                    assert pagelist[i]['the_affect'] == the_affect_CHN[(apilist[i]['the_affect'] or 'null')]
 
 
     def same_event(self, pagelist, apilist):
@@ -135,7 +137,8 @@ class News_calendar(BasePage):
                 item_dict['star'] = len(item.select("div.item-one > span.stars > i.star.stared"))
                 item_dict['title'] = item.select("div.item-two > span")[0].get_text()
                 if calendartab == "数据":
-                    if item.select("div.item-two > span")[1].get_text() != "未公布":
+
+                    if item.select("div.item-two > span")[1].get_text() not in ["未公布", "影响较小"]:
                         item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()[:2]
                     else:
                         item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()
@@ -203,11 +206,14 @@ class News_calendar(BasePage):
             wait_loading(self.driver)
 
         calendardataList = self.calendar_lxml_parse(calendartime, calendartab)
-        print("数据的长度为: {}".format(len(calendardataList)))
-        print("页面返回的数据为: {}".format(calendardataList))
-
         self.driver.quit()
 
+        print("数据的长度为: {}".format(len(calendardataList)))
+        allure.attach("", '页面数据的长度 : {}'.format(len(calendardataList)), allure.attachment_type.TEXT)
+
         self.log.debug("页面返回的数据为 {}".format(calendardataList, ))
+        for i in range(len(calendardataList)):
+            allure.attach(json.dumps(calendardataList[i]), '第 {} 条数据'.format(i), allure.attachment_type.JSON)
+
         return calendardataList
 

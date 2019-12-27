@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 import random
 
 import allure
 import pytest
+
+import CommonsTool
 from GET_New_flash import News_Flash
 from GET_News_bankReport import Bank_Report
 from GET_News_calendar import News_calendar
@@ -18,6 +21,7 @@ from selenium.webdriver.chrome.options import Options
 url = 'https://download.eddidapp.com/page/eddid-news-dev/index.html'
 
 log = Logs()
+log.debug("开始执行程序 {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
 @pytest.fixture
 def driver():
@@ -121,8 +125,10 @@ def test_calendar_date(driver):
     with allure.step("爬取日历-数据页面数据"):
         nowtime = datetime.datetime.now().strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(nowtime))
+        allure.attach('', '打开的日期:{}'.format(nowtime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartime=nowtime)
+        # allure.attach('calendardataList : {}'.format(calendardataList,), '页面返回的数据', allure.attachment_type.TEXT)
 
     with allure.step("调用日历-数据接口"):
         # 调用接口
@@ -347,4 +353,8 @@ def test_calendar_holiday_after(driver):
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py"])
+
+    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_date", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    xml_report_path, html_report_path = CommonsTool.rmdir5()
+    os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
+        xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
