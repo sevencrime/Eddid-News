@@ -7,7 +7,6 @@ import pytest
 from GET_New_flash import News_Flash
 from GET_News_bankReport import Bank_Report
 from GET_News_calendar import News_calendar
-from Logging import Logs
 from News_API import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options

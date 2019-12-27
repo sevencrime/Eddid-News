@@ -33,16 +33,16 @@ class News_Flash(BasePage):
 
             try:
                 # previous : 前值
-                assert pagelist[i]['previous'] == apilist[i]['data']['previous'] + apilist[i]['data']['unit']
+                assert pagelist[i]['previous'] == apilist[i]['data']['previous'] + (apilist[i]['data']['unit'] or '')
 
                 # consensus : 预测值
                 if apilist[i]['data']['consensus'] == None:
                     assert pagelist[i]['consensus'] == '- -'
                 else:
-                    assert pagelist[i]['consensus'] == apilist[i]['data']['consensus'] + apilist[i]['data']['unit']
+                    assert pagelist[i]['consensus'] == apilist[i]['data']['consensus'] + (apilist[i]['data']['unit'] or '')
 
                 # actual : 公布值
-                assert pagelist[i]['actual'] == str(apilist[i]['data']['actual']) + apilist[i]['data']['unit']
+                assert pagelist[i]['actual'] == str(apilist[i]['data']['actual']) + (apilist[i]['data']['unit'] or '')
                 assert pagelist[i]['start'] == apilist[i]['data']['start']
             except KeyError:
                 continue
