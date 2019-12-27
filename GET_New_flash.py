@@ -3,15 +3,16 @@
 import re
 
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup  
 from BasePage import BasePage
 from CommonsTool import wait_loading
+from Logging import Logs
 
 
 class News_Flash(BasePage):
+
+    log = Logs()
 
     def same_flashData(self, pagelist, apilist):
         print("正在对比数据")
@@ -19,7 +20,10 @@ class News_Flash(BasePage):
         assert len(pagelist) == len(apilist)
         reg = re.compile('<[^>]*>')
         for i in range(len(pagelist)):
-            # content = reg.sub('', apilist[i]['data']['content']).replace('\n', '')
+            self.log.debug("i == {}".format(i))
+            self.log.debug("pagelist[i] == {}".format(pagelist[i]))
+            self.log.debug("apilist[i] == {}".format(apilist[i]))
+
             assert pagelist[i]['time'] == apilist[i]['time'][11:]
 
             try:
@@ -104,6 +108,9 @@ class News_Flash(BasePage):
         # print("已经要关闭啦!!!!")
         driver.quit()
 
+        self.log.debug("页面初始数据flashList为 : {}".format(flashList, ))
+        self.log.debug("页面点击加载更多后的数据addflashList为 : {}".format(addflashList, ))
+
         return flashList, addflashList
 
 
@@ -133,6 +140,8 @@ class News_Flash(BasePage):
         print("快讯-港美股点击加载更多按钮后页面返回的数据条数为 : {}".format(len(addflashList)))
         driver.quit()
         
+        self.log.debug("页面初始数据flashList为 : {}".format(flashList, ))
+        self.log.debug("页面点击加载更多后的数据addflashList为 : {}".format(addflashList, ))
         # import pdb; pdb.set_trace
         return flashList, addflashList
 

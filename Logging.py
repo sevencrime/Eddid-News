@@ -50,9 +50,5 @@ def Logs(logname=None):
 
 if __name__ == '__main__':
     Logs().info("1111")
-    Logs().info("2222")
-    Logs().info("3333")
-    l = Logs()
-    l.info("44444444")
-    l.info("555")
-    l.debug("222222222")
+    a = ['1', '2', '3']
+    Logs().info("2222222222 {}".format(a,))

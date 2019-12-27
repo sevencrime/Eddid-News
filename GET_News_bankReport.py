@@ -9,12 +9,18 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup  
 from BasePage import BasePage
 from CommonsTool import wait_loading
+from Logging import Logs
 
 
 class Bank_Report(BasePage):
+    log = Logs()
 
     def same_listofdict(self, pagelist, apilist):
         for i in range(len(pagelist)):
+            self.log.debug("i == {}".format(i))
+            self.log.debug("pagelist[i] == {}".format(pagelist[i]))
+            self.log.debug("apilist[i] == {}".format(apilist[i]))
+
             assert pagelist[i]['pub_time'] == datetime.datetime.strptime(apilist[i]['pub_time'],
                                                                          "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
             assert pagelist[i]['name'][0] in apilist[i]['name']
@@ -68,6 +74,8 @@ class Bank_Report(BasePage):
 
         self.driver.quit()
 
+        self.log.info("页面初始数据flashList为 : {}".format(bankReportList, ))
+        self.log.info("页面点击加载更多后的数据addflashList为 : {}".format(add_bankReportList, ))
         return bankReportList, add_bankReportList
 
     def get_bank_report_us(self):
@@ -98,5 +106,7 @@ class Bank_Report(BasePage):
 
         self.driver.quit()
 
+        self.log.info("页面初始数据flashList为 : {}".format(bankReportList, ))
+        self.log.info("页面点击加载更多后的数据addflashList为 : {}".format(add_bankReportList, ))
         return bankReportList, add_bankReportList
 

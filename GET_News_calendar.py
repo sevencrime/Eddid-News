@@ -6,11 +6,19 @@ from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup  
 from BasePage import BasePage
 from CommonsTool import wait_loading
+from Logging import Logs
 
 
 class News_calendar(BasePage):
+    log = Logs()
 
     def same_data(self, pagelist, apilist, stock=False):
+        '''
+        对比日历-数据 和 日历-美港财报
+        :param pagelist:
+        :param apilist:
+        :param stock: 是否为美港财报数据, Bool
+        '''
 
         the_affect_CHN = {
             'positive' : '利多',
@@ -20,6 +28,11 @@ class News_calendar(BasePage):
         assert len(pagelist) == len(apilist)
         if not stock:
             for i in range(len(pagelist)):
+                self.log.debug("对比日历-数据的数据")
+                self.log.debug("i == {}".format(i))
+                self.log.debug("pagelist[i] == {}".format(pagelist[i]))
+                self.log.debug("apilist[i] == {}".format(apilist[i]))
+
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit'] #接口返回的unit字段(单位)
                 assert pagelist[i]['star'] == apilist[i]['star']
 
@@ -50,6 +63,11 @@ class News_calendar(BasePage):
 
         elif stock:
             for i in range(len(pagelist)):
+                self.log.debug("对比日历-美港财报的数据")
+                self.log.debug("i == {}".format(i))
+                self.log.debug("pagelist[i] == {}".format(pagelist[i]))
+                self.log.debug("apilist[i] == {}".format(apilist[i]))
+
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit']  # 接口返回的unit字段(单位)
                 assert pagelist[i]['star'] == apilist[i]['star']
 
@@ -79,6 +97,10 @@ class News_calendar(BasePage):
     def same_event(self, pagelist, apilist):
         assert len(pagelist) == len(apilist)
         for i in range(len(pagelist)):
+            self.log.debug("对比日历-财经事件的数据")
+            self.log.debug("i == {}".format(i))
+            self.log.debug("pagelist[i] == {}".format(pagelist[i]))
+            self.log.debug("apilist[i] == {}".format(apilist[i]))
             assert pagelist[i]['time_status'] == ('' if apilist[i]['time_status'] == None else apilist[i]['time_status'])
             assert pagelist[i]['event_time'] == apilist[i]['event_time']
             assert pagelist[i]['star'] == apilist[i]['star']
@@ -87,6 +109,10 @@ class News_calendar(BasePage):
     def same_holiday(self, pagelist, apilist):
         assert len(pagelist) == len(apilist)
         for i in range(len(pagelist)):
+            self.log.debug("对比日历-假期的数据")
+            self.log.debug("i == {}".format(i))
+            self.log.debug("pagelist[i] == {}".format(pagelist[i]))
+            self.log.debug("apilist[i] == {}".format(apilist[i]))
             assert pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']
             assert pagelist[i]['title'] == apilist[i]['exchange_name'] + apilist[i]['rest_note']
 
@@ -182,5 +208,6 @@ class News_calendar(BasePage):
 
         self.driver.quit()
 
+        self.log.debug("页面返回的数据为 {}".format(calendardataList, ))
         return calendardataList
 
