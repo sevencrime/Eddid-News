@@ -27,15 +27,14 @@ class News_calendar(BasePage):
             'negative' : '利空',
             'null' : '影响较小'
         }
+
+        allure.attach('', 'pagelist的长度为 {}'.format(len(pagelist)), allure.attachment_type.TEXT)
+        allure.attach('', 'apilist的长度为 {}'.format(len(apilist)), allure.attachment_type.TEXT)
         assert len(pagelist) == len(apilist)
         if not stock:
             for i in range(len(pagelist)):
                 self.log.debug("对比日历-数据的数据")
-                self.log.debug("i == {}".format(i))
-                self.log.debug("pagelist[i] == {}".format(pagelist[i]))
-                self.log.debug("apilist[i] == {}".format(apilist[i]))
-
-                allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+                allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
                               allure.attachment_type.TEXT)
 
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit'] #接口返回的unit字段(单位)
@@ -69,11 +68,8 @@ class News_calendar(BasePage):
         elif stock:
             for i in range(len(pagelist)):
                 self.log.debug("对比日历-美港财报的数据")
-                self.log.debug("i == {}".format(i))
-                self.log.debug("pagelist[i] == {}".format(pagelist[i]))
-                self.log.debug("apilist[i] == {}".format(apilist[i]))
 
-                allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+                allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
                               allure.attachment_type.TEXT)
 
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit']  # 接口返回的unit字段(单位)
@@ -103,14 +99,13 @@ class News_calendar(BasePage):
 
 
     def same_event(self, pagelist, apilist):
+        allure.attach('', 'pagelist的长度为 {}'.format(len(pagelist)), allure.attachment_type.TEXT)
+        allure.attach('', 'apilist的长度为 {}'.format(len(apilist)), allure.attachment_type.TEXT)
         assert len(pagelist) == len(apilist)
         for i in range(len(pagelist)):
             self.log.debug("对比日历-财经事件的数据")
-            self.log.debug("i == {}".format(i))
-            self.log.debug("pagelist[i] == {}".format(pagelist[i]))
-            self.log.debug("apilist[i] == {}".format(apilist[i]))
 
-            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+            allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
                           allure.attachment_type.TEXT)
 
             assert pagelist[i]['time_status'] == ('' if apilist[i]['time_status'] == None else apilist[i]['time_status'])
@@ -119,14 +114,13 @@ class News_calendar(BasePage):
             assert pagelist[i]['event_content'] == apilist[i]['event_content']
 
     def same_holiday(self, pagelist, apilist):
+        allure.attach('', 'pagelist的长度为 {}'.format(len(pagelist)), allure.attachment_type.TEXT)
+        allure.attach('', 'apilist的长度为 {}'.format(len(apilist)), allure.attachment_type.TEXT)
         assert len(pagelist) == len(apilist)
         for i in range(len(pagelist)):
             self.log.debug("对比日历-假期的数据")
-            self.log.debug("i == {}".format(i))
-            self.log.debug("pagelist[i] == {}".format(pagelist[i]))
-            self.log.debug("apilist[i] == {}".format(apilist[i]))
 
-            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+            allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
                           allure.attachment_type.TEXT)
 
             assert pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']

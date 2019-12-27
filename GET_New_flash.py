@@ -18,6 +18,8 @@ class News_Flash(BasePage):
     def same_flashData(self, pagelist, apilist):
         print("正在对比数据")
 
+        allure.attach('', 'pagelist的长度为 {}'.format(len(pagelist)), allure.attachment_type.TEXT)
+        allure.attach('', 'apilist的长度为 {}'.format(len(apilist)), allure.attachment_type.TEXT)
         assert len(pagelist) == len(apilist)
         reg = re.compile('<[^>]*>')
         for i in range(len(pagelist)):
@@ -25,7 +27,7 @@ class News_Flash(BasePage):
             self.log.debug("pagelist[i] == {}".format(pagelist[i]))
             self.log.debug("apilist[i] == {}".format(apilist[i]))
 
-            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i), allure.attachment_type.TEXT)
+            allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i), allure.attachment_type.TEXT)
 
 
             assert pagelist[i]['time'] == apilist[i]['time'][11:]

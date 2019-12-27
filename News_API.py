@@ -27,7 +27,7 @@ def get_flashAPI(channel, max_time=None):
     resp = requests.get(api_url, params=data, headers=headers).json()
 
     log.debug("max_time 为 {} 时, 快讯接口返回的数据为: {}".format((max_time or 'nowtime'), resp, ))
-    allure.attach('', '打开的日期:{}'.format((max_time or 'nowtime')), allure.attachment_type.TEXT)
+    # allure.attach('', '打开的日期:{}'.format((max_time or 'nowtime')), allure.attachment_type.TEXT)
 
     return resp
 
@@ -56,10 +56,6 @@ def calendar_data_API(nowtime, stock=False):
     resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
 
     log.debug("日历接口返回的数据为: {}".format(resp['data'], ))
-
-
-    for i in range(len(resp['data'])):
-        allure.attach('{}'.format(resp['data'][i]), '接口返回的第 {} 条数据'.format(i), allure.attachment_type.TEXT)
 
     return resp['data']
 

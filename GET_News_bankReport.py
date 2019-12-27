@@ -22,7 +22,7 @@ class Bank_Report(BasePage):
             self.log.debug("pagelist[i] == {}".format(pagelist[i]))
             self.log.debug("apilist[i] == {}".format(apilist[i]))
 
-            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),allure.attachment_type.TEXT)
+            allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),allure.attachment_type.TEXT)
 
             assert pagelist[i]['pub_time'] == datetime.datetime.strptime(apilist[i]['pub_time'],
                                                                          "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")
