@@ -223,11 +223,11 @@ class News_calendar(BasePage):
         self.driver.quit()
 
         print("数据的长度为: {}".format(len(calendardataList)))
-        allure.attach("", '页面数据的长度 : {}'.format(len(calendardataList)), allure.attachment_type.TEXT)
-
-        self.log.debug("页面返回的数据为 {}".format(calendardataList, ))
-        for i in range(len(calendardataList)):
-            allure.attach('{}'.format(calendardataList[i]), '第 {} 条数据'.format(i), allure.attachment_type.TEXT)
+        # allure.attach("", '页面数据的长度 : {}'.format(len(calendardataList)), allure.attachment_type.TEXT)
+        #
+        # self.log.debug("页面返回的数据为 {}".format(calendardataList, ))
+        # for i in range(len(calendardataList)):
+        #     allure.attach('{}'.format(calendardataList[i]), '第 {} 条数据'.format(i), allure.attachment_type.TEXT)
 
         return calendardataList
 
