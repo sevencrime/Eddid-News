@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 
+import allure
 from selenium.webdriver import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
@@ -20,6 +21,8 @@ class Bank_Report(BasePage):
             self.log.debug("i == {}".format(i))
             self.log.debug("pagelist[i] == {}".format(pagelist[i]))
             self.log.debug("apilist[i] == {}".format(apilist[i]))
+
+            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),allure.attachment_type.TEXT)
 
             assert pagelist[i]['pub_time'] == datetime.datetime.strptime(apilist[i]['pub_time'],
                                                                          "%Y-%m-%d %H:%M:%S").strftime("%Y-%m-%d")

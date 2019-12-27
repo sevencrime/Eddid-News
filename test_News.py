@@ -128,7 +128,6 @@ def test_calendar_date(driver):
         allure.attach('', '打开的日期:{}'.format(nowtime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartime=nowtime)
-        # allure.attach('calendardataList : {}'.format(calendardataList,), '页面返回的数据', allure.attachment_type.TEXT)
 
     with allure.step("调用日历-数据接口"):
         # 调用接口
@@ -148,6 +147,7 @@ def test_calendar_before(driver):
         # 暂时写死, 不能滑动
         startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartime=startTime)
 
@@ -167,6 +167,7 @@ def test_calendar_after(driver):
         nowtime = datetime.datetime.now()
         startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartime=startTime)
 
@@ -185,6 +186,7 @@ def test_calendar_event_date(driver):
     with allure.step("爬取日历-财经事件页面数据"):
         nowtime = datetime.datetime.now().strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(nowtime))
+        allure.attach('', '打开的日期:{}'.format(nowtime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartime=nowtime, calendartab="财经事件")
 
@@ -206,6 +208,7 @@ def test_calendar_event_before(driver):
         # 暂时写死, 不能滑动
         startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="财经事件", calendartime=startTime)
 
@@ -225,6 +228,7 @@ def test_calendar_event_after(driver):
         nowtime = datetime.datetime.now()
         startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="财经事件", calendartime=startTime)
 
@@ -243,6 +247,7 @@ def test_calendar_stock_date(driver):
     with allure.step("爬取日历-美港财报页面数据"):
         nowtime = datetime.datetime.now().strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(nowtime))
+        allure.attach('', '打开的日期:{}'.format(nowtime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="美港财报")
 
@@ -263,6 +268,7 @@ def test_calendar_stock_before(driver):
         # 暂时写死, 不能滑动
         startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="美港财报", calendartime=startTime)
 
@@ -282,6 +288,7 @@ def test_calendar_stock_after(driver):
         nowtime = datetime.datetime.now()
         startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="美港财报", calendartime=startTime)
 
@@ -300,6 +307,7 @@ def test_calendar_holiday_date(driver):
     with allure.step("爬取日历-假期页面数据"):
         nowtime = datetime.datetime.now().strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(nowtime))
+        allure.attach('', '打开的日期:{}'.format(nowtime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="假期")
 
@@ -321,6 +329,7 @@ def test_calendar_holiday_before(driver):
         # 暂时写死, 不能滑动
         startTime = (nowtime - datetime.timedelta(days=2)).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="假期", calendartime=startTime)
 
@@ -340,6 +349,7 @@ def test_calendar_holiday_after(driver):
         nowtime = datetime.datetime.now()
         startTime = (nowtime + datetime.timedelta(days=random.randint(1, 15))).strftime("%Y%m%d")
         log.info("打开的日期为 {}".format(startTime))
+        allure.attach('', '打开的日期:{}'.format(startTime), allure.attachment_type.TEXT)
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="假期", calendartime=startTime)
 
@@ -353,8 +363,7 @@ def test_calendar_holiday_after(driver):
 
 
 if __name__ =='__main__':
-
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_calendar_date", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()

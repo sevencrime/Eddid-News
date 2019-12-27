@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import re
 
+import allure
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from bs4 import BeautifulSoup  
@@ -23,6 +24,9 @@ class News_Flash(BasePage):
             self.log.debug("i == {}".format(i))
             self.log.debug("pagelist[i] == {}".format(pagelist[i]))
             self.log.debug("apilist[i] == {}".format(apilist[i]))
+
+            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i), allure.attachment_type.TEXT)
+
 
             assert pagelist[i]['time'] == apilist[i]['time'][11:]
 

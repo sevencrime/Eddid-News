@@ -35,6 +35,9 @@ class News_calendar(BasePage):
                 self.log.debug("pagelist[i] == {}".format(pagelist[i]))
                 self.log.debug("apilist[i] == {}".format(apilist[i]))
 
+                allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+                              allure.attachment_type.TEXT)
+
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit'] #接口返回的unit字段(单位)
                 assert pagelist[i]['star'] == apilist[i]['star']
 
@@ -70,6 +73,9 @@ class News_calendar(BasePage):
                 self.log.debug("pagelist[i] == {}".format(pagelist[i]))
                 self.log.debug("apilist[i] == {}".format(apilist[i]))
 
+                allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+                              allure.attachment_type.TEXT)
+
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit']  # 接口返回的unit字段(单位)
                 assert pagelist[i]['star'] == apilist[i]['star']
 
@@ -103,6 +109,10 @@ class News_calendar(BasePage):
             self.log.debug("i == {}".format(i))
             self.log.debug("pagelist[i] == {}".format(pagelist[i]))
             self.log.debug("apilist[i] == {}".format(apilist[i]))
+
+            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+                          allure.attachment_type.TEXT)
+
             assert pagelist[i]['time_status'] == ('' if apilist[i]['time_status'] == None else apilist[i]['time_status'])
             assert pagelist[i]['event_time'] == apilist[i]['event_time']
             assert pagelist[i]['star'] == apilist[i]['star']
@@ -115,6 +125,10 @@ class News_calendar(BasePage):
             self.log.debug("i == {}".format(i))
             self.log.debug("pagelist[i] == {}".format(pagelist[i]))
             self.log.debug("apilist[i] == {}".format(apilist[i]))
+
+            allure.attach('page : {} \n\n api : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
+                          allure.attachment_type.TEXT)
+
             assert pagelist[i]['name'] == apilist[i]['country'] + '/' + apilist[i]['name']
             assert pagelist[i]['title'] == apilist[i]['exchange_name'] + apilist[i]['rest_note']
 
@@ -213,7 +227,7 @@ class News_calendar(BasePage):
 
         self.log.debug("页面返回的数据为 {}".format(calendardataList, ))
         for i in range(len(calendardataList)):
-            allure.attach(json.dumps(calendardataList[i]), '第 {} 条数据'.format(i), allure.attachment_type.JSON)
+            allure.attach('{}'.format(calendardataList[i]), '第 {} 条数据'.format(i), allure.attachment_type.TEXT)
 
         return calendardataList
 
