@@ -9,7 +9,8 @@ import json
 from Logging import Logs
 
 headers = {
-    'Content-Type' : 'application/json'
+    'Content-Type' : 'application/json',
+    'User-Agent' : 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1'
 }
 requests.adapters.DEFAULT_RETRIES = 5
 
@@ -24,7 +25,7 @@ def get_flashAPI(channel, max_time=None):
         data['max_time'] = max_time
 
     print("正在请求flash_list接口")
-    resp = requests.get(api_url, params=data, headers=headers).json()
+    resp = requests.get(api_url, params=data, headers=headers, timeout=10).json()
 
     log.debug("max_time 为 {} 时, 快讯接口返回的数据为: {}".format((max_time or 'nowtime'), resp, ))
     # allure.attach('', '打开的日期:{}'.format((max_time or 'nowtime')), allure.attachment_type.TEXT)
@@ -37,7 +38,7 @@ def bank_report_API(category):
     payload = {}
     payload['category'] = category
 
-    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers, timeout=10).json()
 
     log.debug("投行报告接口返回的数据为: {}".format(resp['data']['list'], ))
     return resp['data']['list']
@@ -53,7 +54,7 @@ def calendar_data_API(nowtime, stock=False):
         # 美港财报
         payload['data_type'] = "stock"
 
-    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers, timeout=10).json()
 
     log.debug("日历接口返回的数据为: {}".format(resp['data'], ))
 
@@ -66,7 +67,7 @@ def calendar_event_API(nowtime):
         "date" : nowtime,
         "category" : ["hk", "us", "cj"] #不要"qh"
     }
-    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers, timeout=10).json()
 
     log.debug("日历--财经事件接口 返回的数据为: {}".format(resp['data'], ))
     return resp['data']
@@ -78,7 +79,7 @@ def calendar_holiday_API(nowtime):
         "date" : nowtime,
         "category" : ["hk", "us", "cj"] #不要"qh"
     }
-    resp = requests.post(api_url, data=json.dumps(payload), headers=headers).json()
+    resp = requests.post(api_url, data=json.dumps(payload), headers=headers, timeout=10).json()
 
     log.debug("日历--假期接口 返回的数据为: {}".format(resp['data'], ))
     return resp['data']
@@ -87,4 +88,5 @@ def calendar_holiday_API(nowtime):
 
 if __name__ == '__main__':
     # bank_report_API(["hk"])
-    calendar_data_API(datetime.datetime.now().strftime("%Y%m%d"))
+    r = get_flashAPI(-8200)
+    print(r)

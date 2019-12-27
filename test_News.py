@@ -28,6 +28,8 @@ def driver():
     chrome_options = Options()
     # 静默模式, 不显示浏览器
     chrome_options.add_argument('headless')
+    # https 设置
+    chrome_options.add_argument('--ignore-certificate-errors')
     # 设置窗口大小为iPhone X
     mobileEmulation = {'deviceName': 'iPhone X'}
     chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
@@ -363,7 +365,7 @@ def test_calendar_holiday_after(driver):
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v", "--pdb", "test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
