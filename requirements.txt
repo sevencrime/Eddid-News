@@ -1,0 +1,7 @@
+pytest
+requests
+allure-pytest==2.7.0
+allure-python-commons==2.7.0
+beautifulsoup4
+lxml
+selenium

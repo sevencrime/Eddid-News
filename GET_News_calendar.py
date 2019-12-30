@@ -108,7 +108,11 @@ class News_calendar(BasePage):
             allure.attach('页面的数据 : {} \n\n 接口返回的数据 : {}'.format(pagelist[i], apilist[i]), '对比第 {} 条数据'.format(i),
                           allure.attachment_type.TEXT)
 
-            assert pagelist[i]['time_status'] == ('' if apilist[i]['time_status'] == None else apilist[i]['time_status'])
+            try:
+                assert pagelist[i]['time_status'] == ('' if apilist[i]['time_status'] == None else apilist[i]['time_status'])
+            except KeyError:
+                self.log.error("第{}条数据,接口没有time_status的key".format(i))
+
             assert pagelist[i]['event_time'] == apilist[i]['event_time']
             assert pagelist[i]['star'] == apilist[i]['star']
             assert pagelist[i]['event_content'] == apilist[i]['event_content']
@@ -154,6 +158,9 @@ class News_calendar(BasePage):
                 elif calendartab == "美港财报":
                     if item.select("div.item-two > span")[1].get_text() == "利多股票" or item.select("div.item-two > span")[1].get_text() == "利空股票":
                         item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()[:2]
+                    else:
+                        item_dict['the_affect'] = item.select("div.item-two > span")[1].get_text()
+
 
                 item_dict['previous'] = item.select("div.item-three > span")[0].get_text()[3:].replace(" ", "")
                 item_dict['consensus'] = item.select("div.item-three > span")[1].get_text()[4:].replace(" ", "")
