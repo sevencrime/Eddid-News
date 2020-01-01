@@ -10,9 +10,7 @@ FROM selenium/node-chrome
 
 
 # 基于python3.6.8镜像
-FROM python:3.6.8
-
-MAINTAINER onedi  <onedi@qq.com>
+FROM python:3-alpine
 
 # 更新pip
 RUN pip install --upgrade pip --index-url https://pypi.douban.com/simple
