@@ -40,7 +40,7 @@ def driver():
 
     # docker 启动
     driver = webdriver.Remote(
-        command_executor='http://127.0.0.1:32777/wd/hub',
+        command_executor='http://127.0.0.1:12777/wd/hub',
         desired_capabilities={'browserName': 'chrome'},
         options=chrome_options
     )
