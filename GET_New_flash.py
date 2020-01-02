@@ -33,7 +33,10 @@ class News_Flash(BasePage):
             assert pagelist[i]['time'] == apilist[i]['time'][11:]
 
             try:
-                assert pagelist[i]['content'] == reg.sub('', apilist[i]['data']['content']).replace('\n', '')
+                if apilist[i]['data']['content'].find("<b>") != -1:
+                    assert pagelist[i]['content'] == reg.sub('', apilist[i]['data']['content']).replace('\n', '')
+                else:
+                    assert pagelist[i]['content'] == apilist[i]['data']['content'].replace('\n', '').replace('<br />', '').replace('</br >', '')
             except KeyError:
                 assert pagelist[i]['content'] == apilist[i]['data']['country'] + apilist[i]['data']['time_period'] + apilist[i]['data']['name']
 
