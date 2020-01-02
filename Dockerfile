@@ -20,7 +20,8 @@ WORKDIR /Eddid-News
 ADD . /Eddid-News
 
 # pip安装依赖包
-RUN pip install -r requirements.txt --index-url https://pypi.douban.com/simple
+RUN apk add --update --no-cache g++ gcc libxslt-dev &&\ 
+    pip install -r requirements.txt --index-url https://pypi.douban.com/simple
 
 # 传递参数
 ENTRYPOINT ["python"]

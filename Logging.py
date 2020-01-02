@@ -16,12 +16,13 @@ def Logs(logname=None):
         t = time.strftime('%Y%m%d_%H%M', time.localtime(time.time()))
         # 当前目录
         curPath = os.path.abspath(os.path.dirname(__file__))
-        if os.path.exists(curPath+"/Logs") is False:
-            os.makedirs(curPath+"/Logs")
+        rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
+        if os.path.exists(rootPath+"/Logs") is False:
+            os.makedirs(rootPath+"/Logs")
         if logname == None:
-            url_log = curPath + '/Logs/run_log.log'
+            url_log = rootPath + '/Logs/run_log.log'
         else:
-            url_log = curPath + '/Logs/{}.log'.format(logname)
+            url_log = rootPath + '/Logs/{}.log'.format(logname)
         # url_log = os.path.abspath(os.path.dirname(os.getcwd())) + '/logs/run_result_%s.log' %t
         # url_log = "D:/Python_Demo/NewType/Eddid_CRM/Logs/run_result.log"
         # 获取logger对象，设置日志级别

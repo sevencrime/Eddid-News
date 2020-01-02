@@ -34,16 +34,16 @@ def driver():
     mobileEmulation = {'deviceName': 'iPhone X'}
     chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
 
-    # driver = webdriver.Chrome(
-    #     executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
-    #     chrome_options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
+        chrome_options=chrome_options)
 
     # docker 启动
-    driver = webdriver.Remote(
-        command_executor='http://127.0.0.1:32777/wd/hub',
-        desired_capabilities={'browserName': 'chrome'},
-        options=chrome_options
-    )
+    # driver = webdriver.Remote(
+    #     command_executor='http://127.0.0.1:32777/wd/hub',
+    #     desired_capabilities={'browserName': 'chrome'},
+    #     options=chrome_options
+    # )
 
 
     return driver

@@ -19,7 +19,8 @@ def wait_loading(driver):
 
 
 def rmdir5():
-    rootPath = os.path.abspath(os.path.dirname(__file__))
+    curPath = os.path.abspath(os.path.dirname(__file__))
+    rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
     xml_report_pathlib = glob.glob(rootPath + r'\report\\xml*')
     html_report_pathlib = glob.glob(rootPath + r'\\report\\html*')
 
