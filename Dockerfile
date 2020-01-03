@@ -1,7 +1,7 @@
 FROM selenium/hub
 
 # 启动主hub容器
-# RUN docker run -d -p 32777:4444 --name selenium-hub selenium/hub
+# RUN docker run -d -p 12777:4444 --name selenium-hub selenium/hub
 
 FROM selenium/node-chrome
 
@@ -10,7 +10,7 @@ FROM selenium/node-chrome
 
 
 # 基于python3.6.8镜像
-FROM python:3.6
+FROM python:3-alpine
 
 # 更新pip
 RUN pip install --upgrade pip --index-url https://pypi.douban.com/simple
@@ -20,10 +20,8 @@ WORKDIR /Eddid-News
 ADD . /Eddid-News
 
 # pip安装依赖包
-# RUN apk add --update --no-cache g++ gcc libxslt-dev &&\ 
-#   pip install -r requirements.txt --index-url https://pypi.douban.com/simple
-
-RUN pip install -r requirements.txt --index-url https://pypi.douban.com/simple
+RUN apk add --update --no-cache g++ gcc libxslt-dev &&\ 
+    pip install -r requirements.txt --index-url https://pypi.douban.com/simple
 
 # 传递参数
 ENTRYPOINT ["python"]

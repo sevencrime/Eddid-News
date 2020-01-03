@@ -13,6 +13,7 @@ from GET_News_calendar import News_calendar
 from News_API import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 # 生产环境
@@ -40,8 +41,8 @@ def driver():
 
     # docker 启动
     driver = webdriver.Remote(
-        command_executor='http://127.0.0.1:32777/wd/hub',
-        desired_capabilities={'browserName': 'chrome'},
+        command_executor='http://127.0.0.1:12777/wd/hub',
+        desired_capabilities=DesiredCapabilities.CHROME,
         options=chrome_options
     )
 
