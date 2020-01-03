@@ -41,7 +41,7 @@ def driver():
 
     # docker 启动
     driver = webdriver.Remote(
-        command_executor='http://127.0.0.1:12777/wd/hub',
+        command_executor='http://192.168.50.158:12777/wd/hub',
         desired_capabilities=DesiredCapabilities.CHROME,
         options=chrome_options
     )
@@ -394,7 +394,7 @@ def test_calendar_holiday_after(driver):
 
 
 if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_flash_futures", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v", "--pdb" ,"test_News.py::test_flash_HK", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
