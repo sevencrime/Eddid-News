@@ -5,6 +5,7 @@ import random
 
 import allure
 import pytest
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 import CommonsTool
 from GET_New_flash import News_Flash
@@ -13,6 +14,7 @@ from GET_News_calendar import News_calendar
 from News_API import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 
 # 生产环境
@@ -34,16 +36,16 @@ def driver():
     mobileEmulation = {'deviceName': 'iPhone X'}
     chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
 
-    # driver = webdriver.Chrome(
-    #     executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
-    #     chrome_options=chrome_options)
+    driver = webdriver.Chrome(
+        executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
+        chrome_options=chrome_options)
 
-    # docker 启动
-    driver = webdriver.Remote(
-        command_executor='http://127.0.0.1:12777/wd/hub',
-        desired_capabilities={'browserName': 'chrome'},
-        options=chrome_options
-    )
+    # 使用远程服务器启动
+    # driver = webdriver.Remote(
+    #     command_executor='http://192.168.50.158:12777/wd/hub',
+    #     desired_capabilities=DesiredCapabilities.CHROME,
+    #     options=chrome_options
+    # )
 
 
     return driver
@@ -391,9 +393,18 @@ def test_calendar_holiday_after(driver):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
 
-
-if __name__ =='__main__':
-    pytest.main(["-s", "-v", "--pdb", "test_News.py::test_flash_futures", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+def run():
+    print("开始执行程序")
+    pytest.main(["-s", "-v", "--pdb" ,"test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
+
+
+if __name__ =='__main__':
+    run()
+    # print("启动定时任务--30分钟执行一次")
+    # apscheduler = BlockingScheduler()
+    # apscheduler.add_job(func=run, trigger='cron', minute='*/30')  #30分钟执行一次
+    # apscheduler._logger = log
+    # apscheduler.start()
