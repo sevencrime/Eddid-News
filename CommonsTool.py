@@ -35,13 +35,13 @@ def rmdir5():
 
     # 判断文件目录是否超过n个
     # 生成后才调用该方法, 所以要+1
-    # if len(xml_report_pathlib) >= 6:
-    #     # shutil模块, 文件高级库
-    #     shutil.rmtree(xml_report_pathlib[0])
-    #
-    # if len(html_report_pathlib) >= 5:
-    #     # 删除第一个
-    #     shutil.rmtree(html_report_pathlib[0])
+    if len(xml_report_pathlib) >= 10:
+        # shutil模块, 文件高级库
+        shutil.rmtree(xml_report_pathlib[0])
+    
+    if len(html_report_pathlib) >= 50:
+        # 删除第一个
+        shutil.rmtree(html_report_pathlib[0])
 
     # self.gm.set_value(xml_report_path=xml_report_pathlib[-1])
     # self.gm.set_value(html_report_path=html_report_name)
