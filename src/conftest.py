@@ -47,13 +47,12 @@ def pytest_runtest_makereport(item, call):
     setattr(item, "rep_" + rep.when, rep)
     if rep.when == 'call':
         if rep.failed:
-            import pdb; pdb.set_trace()
             # 把测试失败的记录下来
-            errlist = gm.get_value("err")
+            errlist = gm.get_value("errfunc")
             msglist = gm.get_value("errmsg")
 
             errlist.append(item)
             msglist.append(call)
 
-            gm.set_List("err", errlist)
+            gm.set_List("errfunc", errlist)
             gm.set_List("errmsg", msglist)

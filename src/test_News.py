@@ -373,8 +373,10 @@ def test1():
 def run():
     print("开始执行程序")
     gm = GlobalMap()
-    gm.set_List("err", [])
+    gm.set_List("errfunc", [])
     gm.set_List("errmsg", [])
+    gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
+    import pdb; pdb.set_trace()
 
     pytest.main(["-s", "-v" ,"test_News.py::test1", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
@@ -384,9 +386,9 @@ def run():
     import pdb; pdb.set_trace()
     if gm.get_value("err") != [] and gm.get_value("err") != 'Null_':
         # 发送邮件提醒
-        send_email()
+        send_email(gm.get_value("nowtime"), gm.get_value("errfunc"), gm.get_value("errmsg"))
         # 删除变量
-        gm.del_map("err")
+        gm.del_map("errfunc")
         gm.del_map("errmsg")
 
 

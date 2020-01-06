@@ -62,14 +62,28 @@ def set_details(s):
     except UnicodeDecodeError:
         return formataddr((Header(name, 'gbk')).encode(), addr)
 
-def send_email():
+def send_email(time, errfunc, errmsg):
     smtp_server = "smtp.sina.cn"
     username = "15089514626@sina.cn"
     password = "Abcd1234"
     sendaddr = "onedi@qq.com"
 
+    message = """
+    <html>
+         <head>
+            <title> 资讯测试 </title>
+         </head>
+         <body>
+            <p> 执行时间 : {time}</p>
+            <p>报错的函数为 : {errfunc}</p>
+         </body>
+    </html>
+    """.format(time=time, errfunc=errfunc)
+
+    import pdb; pdb.set_trace()
+
     # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
-    msg = MIMEText("测试发送", 'html', 'utf-8')
+    msg = MIMEText(message, 'html', 'utf-8')
     msg['From'] = set_details("Onedi<{from_name}>".format(from_name=username))  #发送者
     msg['To'] = set_details("onedi<{to_url}>".format(to_url=sendaddr))      #接收者
     msg['Subject'] = Header("eddid-资讯数据出问题了啊!!!", 'utf-8').encode()     #标题
