@@ -1,16 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*
 import glob
+import os
 import shutil
+import smtplib
+from email.header import Header
+from email.mime.text import MIMEText
+from email.utils import parseaddr, formataddr
 
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.common.by import By
-import os
 
-from Logging import Logs
+from src.Commons.Logging import Logs
 
 log = Logs()
+
 
 def wait_loading(driver):
     loading = (By.XPATH, '//div[@class="md-popup-box md-fade" and @style="display: none;"]')
@@ -48,3 +53,29 @@ def rmdir5():
 
     return xml_report_pathlib[-1], html_report_name
 
+
+def set_details(s):
+    # 转码邮件头
+    name, addr = parseaddr(s)
+    try:
+        return formataddr((Header(name, 'utf-8').encode(), addr))
+    except UnicodeDecodeError:
+        return formataddr((Header(name, 'gbk')).encode(), addr)
+
+def send_email():
+    smtp_server = "smtp.sina.cn"
+    username = "15089514626@sina.cn"
+    password = "Abcd1234"
+    sendaddr = "onedi@qq.com"
+
+    # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
+    msg = MIMEText("测试发送", 'html', 'utf-8')
+    msg['From'] = set_details("Onedi<{from_name}>".format(from_name=username))  #发送者
+    msg['To'] = set_details("onedi<{to_url}>".format(to_url=sendaddr))      #接收者
+    msg['Subject'] = Header("eddid-资讯数据出问题了啊!!!", 'utf-8').encode()     #标题
+
+    smtpServer = smtplib.SMTP(smtp_server, 25)
+    # smtpServer.set_debuglevel(1)
+    smtpServer.login(username, password)
+    smtpServer.sendmail(username, sendaddr, msg.as_string())
+    smtpServer.quit()

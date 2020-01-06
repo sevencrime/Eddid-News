@@ -3,14 +3,13 @@
 import datetime
 
 import allure
+from bs4 import BeautifulSoup
 from selenium.webdriver import ActionChains
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup  
-from BasePage import BasePage
-from CommonsTool import wait_loading
-from Logging import Logs
+
+from src.Commons.BasePage import BasePage
+from src.Commons.CommonsTool import wait_loading
+from src.Commons.Logging import Logs
 
 
 class Bank_Report(BasePage):

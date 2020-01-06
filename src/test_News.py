@@ -1,21 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import datetime
 import os
 import random
-
 import allure
 import pytest
-from apscheduler.schedulers.blocking import BlockingScheduler
-
-import CommonsTool
-from GET_New_flash import News_Flash
-from GET_News_bankReport import Bank_Report
-from GET_News_calendar import News_calendar
-from News_API import *
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
+from src.Commons import CommonsTool
+from src.Commons.Logging import Logs
+from src.News_API import get_flashAPI, bank_report_API, calendar_data_API, calendar_event_API, calendar_holiday_API
+from src.pages.GET_New_flash import News_Flash
+from src.pages.GET_News_bankReport import Bank_Report
+from src.pages.GET_News_calendar import News_calendar
 
 # 生产环境
 # url = 'https://download.eddidapp.com/page/eddid-news/index.html'
@@ -25,30 +20,7 @@ url = 'https://download.eddidapp.com/page/eddid-news-dev/index.html'
 log = Logs()
 log.debug("开始执行程序 {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
 
-@pytest.fixture
-def driver():
-    chrome_options = Options()
-    # 静默模式, 不显示浏览器
-    chrome_options.add_argument('headless')
-    # https 设置
-    chrome_options.add_argument('--ignore-certificate-errors')
-    # 设置窗口大小为iPhone X
-    mobileEmulation = {'deviceName': 'iPhone X'}
-    chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
 
-    driver = webdriver.Chrome(
-        executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
-        chrome_options=chrome_options)
-
-    # 使用远程服务器启动
-    # driver = webdriver.Remote(
-    #     command_executor='http://192.168.50.158:12777/wd/hub',
-    #     desired_capabilities=DesiredCapabilities.CHROME,
-    #     options=chrome_options
-    # )
-
-
-    return driver
 
 @allure.feature("校验快讯-期货的数据")
 @allure.description("affect有值时 : pagelist['content'] == apilist['data']['country'] + apilist['data']['time_period'] + apilist['data']['name']\n\n"
@@ -398,7 +370,7 @@ def test1():
 
 def run():
     print("开始执行程序")
-    pytest.main(["-s", "-v", "--pdb" ,"test_News.py::test1", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v", "--pdb" ,"test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()

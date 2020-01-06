@@ -1,12 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import allure
-import requests
-import re
-import datetime
 import json
+import requests
+from src.Commons.Logging import Logs
 
-from Logging import Logs
+log = Logs()
 
 headers = {
     'Content-Type' : 'application/json',
@@ -14,11 +12,9 @@ headers = {
 }
 requests.adapters.DEFAULT_RETRIES = 5
 
-log = Logs()
 
 def get_flashAPI(channel, max_time=None):
     api_url = "http://114.55.249.227:8080/eddid/flash_list"
-    api_flashList = []
     data = {}
     data['channel'] = channel
     if max_time != None:
