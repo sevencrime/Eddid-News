@@ -78,9 +78,7 @@ def send_email(time, errfunc, errmsg):
             <p>报错的函数为 : {errfunc}</p>
          </body>
     </html>
-    """.format(time=time, errfunc=errfunc)
-
-    import pdb; pdb.set_trace()
+    """.format(time=time, errfunc=str(errfunc))
 
     # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
     msg = MIMEText(message, 'html', 'utf-8')

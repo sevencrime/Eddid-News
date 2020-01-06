@@ -375,16 +375,14 @@ def run():
     gm = GlobalMap()
     gm.set_List("errfunc", [])
     gm.set_List("errmsg", [])
-    gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
-    import pdb; pdb.set_trace()
+    gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
     pytest.main(["-s", "-v" ,"test_News.py::test1", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
 
-    import pdb; pdb.set_trace()
-    if gm.get_value("err") != [] and gm.get_value("err") != 'Null_':
+    if gm.get_value("errfunc") != [] and gm.get_value("errfunc") != 'Null_':
         # 发送邮件提醒
         send_email(gm.get_value("nowtime"), gm.get_value("errfunc"), gm.get_value("errmsg"))
         # 删除变量
