@@ -392,10 +392,13 @@ def test_calendar_holiday_after(driver):
     with allure.step("对比数据"):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
+def test1():
+    assert 1 == 2
+
 
 def run():
     print("开始执行程序")
-    pytest.main(["-s", "-v", "--pdb" ,"test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v", "--pdb" ,"test_News.py::test1", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
