@@ -6,6 +6,8 @@ import random
 import allure
 import pytest
 from src.Commons import CommonsTool
+from src.Commons.CommonsTool import send_email
+from src.Commons.GlobalMap import GlobalMap
 from src.Commons.Logging import Logs
 from src.News_API import get_flashAPI, bank_report_API, calendar_data_API, calendar_event_API, calendar_holiday_API
 from src.pages.GET_New_flash import News_Flash
@@ -370,10 +372,23 @@ def test1():
 
 def run():
     print("开始执行程序")
-    pytest.main(["-s", "-v", "--pdb" ,"test_News.py", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    gm = GlobalMap()
+    gm.set_List("err", [])
+    gm.set_List("errmsg", [])
+
+    pytest.main(["-s", "-v" ,"test_News.py::test1", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
+
+    import pdb; pdb.set_trace()
+    if gm.get_value("err") != [] and gm.get_value("err") != 'Null_':
+        # 发送邮件提醒
+        send_email()
+        # 删除变量
+        gm.del_map("err")
+        gm.del_map("errmsg")
+
 
 
 if __name__ =='__main__':

@@ -4,8 +4,9 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from src.Commons.CommonsTool import send_email
+from src.Commons.GlobalMap import GlobalMap
 
+gm = GlobalMap()
 
 @pytest.fixture
 def driver():
@@ -46,8 +47,13 @@ def pytest_runtest_makereport(item, call):
     setattr(item, "rep_" + rep.when, rep)
     if rep.when == 'call':
         if rep.failed:
-            print(item, "测试失败")
-            print("失败原因为 {}".format(call))
-            # 捕获失败后, 发送邮件提示
-            send_email()
+            import pdb; pdb.set_trace()
+            # 把测试失败的记录下来
+            errlist = gm.get_value("err")
+            msglist = gm.get_value("errmsg")
 
+            errlist.append(item)
+            msglist.append(call)
+
+            gm.set_List("err", errlist)
+            gm.set_List("errmsg", msglist)
