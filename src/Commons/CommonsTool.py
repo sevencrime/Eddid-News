@@ -40,7 +40,7 @@ def rmdir5():
 
     # 判断文件目录是否超过n个
     # 生成后才调用该方法, 所以要+1
-    if len(xml_report_pathlib) >= 10:
+    if len(xml_report_pathlib) >= 2:
         # shutil模块, 文件高级库
         shutil.rmtree(xml_report_pathlib[0])
     
@@ -76,9 +76,12 @@ def send_email(time, errfunc, errmsg):
          <body>
             <p> 执行时间 : {time}</p>
             <p>报错的函数为 : {errfunc}</p>
+            <br>
+            <p>报告地址  <a>192.168.50.158:7777</a></p>
          </body>
     </html>
-    """.format(time=time, errfunc=str(errfunc))
+    """.format(time=time, errfunc="".join(n.name + ", " for n in errfunc))
+
 
     # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
     msg = MIMEText(message, 'html', 'utf-8')

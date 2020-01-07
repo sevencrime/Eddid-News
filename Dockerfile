@@ -1,9 +1,9 @@
-# FROM selenium/hub
+FROM selenium/hub
 
 # 启动主hub容器
 # RUN docker run -d -p 12777:4444 --name selenium-hub selenium/hub
 
-# FROM selenium/node-chrome
+FROM selenium/node-chrome
 
 # 启动分支node chrome 容器
 # RUN docker run -d --link selenium-hub:hub selenium/node-chrome

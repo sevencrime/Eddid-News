@@ -15,9 +15,9 @@ from src.pages.GET_News_bankReport import Bank_Report
 from src.pages.GET_News_calendar import News_calendar
 
 # 生产环境
-# url = 'https://download.eddidapp.com/page/eddid-news/index.html'
+url = 'https://download.eddidapp.com/page/eddid-news/index.html'
 # uat环境
-url = 'https://download.eddidapp.com/page/eddid-news-dev/index.html'
+# url = 'https://download.eddidapp.com/page/eddid-news-dev/index.html'
 
 log = Logs()
 log.debug("开始执行程序 {}".format(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
@@ -57,11 +57,11 @@ def test_flash_futures(driver):
                     )
 def test_flash_HK(driver):
     # 快讯 -港美股
-    n = News_Flash(driver, url)   
+    n = News_Flash(driver, url)
     with allure.step("爬取快讯-港美股页面数据"):
         flashList, addflashList= n.get_flash_HK()
 
-    with allure.step("调用快讯-港美股接口"):   
+    with allure.step("调用快讯-港美股接口"):
         flash_api_list = get_flashAPI(channel=3)
 
     with allure.step("对比数据"):
@@ -128,7 +128,7 @@ def test_calendar_date(driver):
         # 调用接口
         dataAPI_list = calendar_data_API(nowtime)
 
-    with allure.step("对比数据"):   
+    with allure.step("对比数据"):
         calendar.same_data(calendardataList, dataAPI_list)
 
 # 日历-数据-以前日期
@@ -151,7 +151,7 @@ def test_calendar_before(driver):
         # 调用接口
         dataAPI_list = calendar_data_API(startTime)
 
-    with allure.step("对比数据"):  
+    with allure.step("对比数据"):
         calendar.same_data(calendardataList, dataAPI_list)
 
 # 日历-数据-未来日期
@@ -172,7 +172,7 @@ def test_calendar_after(driver):
         # 调用接口
         dataAPI_list = calendar_data_API(startTime)
 
-    with allure.step("对比数据"): 
+    with allure.step("对比数据"):
         calendar.same_data(calendardataList, dataAPI_list)
 
 
@@ -187,11 +187,11 @@ def test_calendar_event_date(driver):
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartime=nowtime, calendartab="财经事件")
 
-    with allure.step("调用日历-财经事件接口"): 
+    with allure.step("调用日历-财经事件接口"):
         # 调用接口
         dataAPI_list = calendar_event_API(nowtime)
 
-    with allure.step("对比数据"): 
+    with allure.step("对比数据"):
         calendar.same_event(calendardataList, dataAPI_list)
 
 # 日历-财经事件-以前日期
@@ -213,7 +213,7 @@ def test_calendar_event_before(driver):
         # 调用接口
         dataAPI_list = calendar_event_API(startTime)
 
-    with allure.step("对比数据"): 
+    with allure.step("对比数据"):
         calendar.same_event(calendardataList, dataAPI_list)
 
 # 日历-财经事件-未来日期
@@ -249,7 +249,7 @@ def test_calendar_stock_date(driver):
         # 爬页面
         calendardataList = calendar.get_calendar_data(calendartab="美港财报")
 
-    with allure.step("请求日历-美港财报接口"):  
+    with allure.step("请求日历-美港财报接口"):
         dataAPI_list = calendar_data_API(nowtime, stock=True)
 
     with allure.step("对比数据"):
@@ -366,9 +366,6 @@ def test_calendar_holiday_after(driver):
     with allure.step("对比数据"):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
-def test1():
-    assert 1 == 2
-
 
 def run():
     print("开始执行程序")
@@ -377,7 +374,13 @@ def run():
     gm.set_List("errmsg", [])
     gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
-    pytest.main(["-s", "-v" ,"test_News.py::test1", '--alluredir', './report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))])
+    pytest.main(["-s", "-v" ,"test_News.py",
+                 '--alluredir',
+                 '../report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
+                 "--reruns=2",
+                 "--reruns-delay=2"
+                 ])
+
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
