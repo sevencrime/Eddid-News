@@ -1,5 +1,7 @@
-from apscheduler.schedulers.blocking import BlockingScheduler
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+from apscheduler.schedulers.blocking import BlockingScheduler
 from src.Commons.Logging import Logs
 from src.test_News import run
 
@@ -7,8 +9,8 @@ from src.test_News import run
 if __name__ == '__main__':
     log = Logs()
     # run()
-    print("Æô¶¯¶¨Ê±ÈÎÎñ--30·ÖÖÓÖ´ĞĞÒ»´Î")
+    print("å¯åŠ¨å®šæ—¶ä»»åŠ¡--30åˆ†é’Ÿæ‰§è¡Œä¸€æ¬¡")
     apscheduler = BlockingScheduler()
-    apscheduler.add_job(func=run, trigger='cron', minute='*/30')  #30·ÖÖÓÖ´ĞĞÒ»´Î
+    apscheduler.add_job(func=run, trigger='cron', minute='*/30')  #30åˆ†é’Ÿæ‰§è¡Œä¸€æ¬¡
     apscheduler._logger = log
     apscheduler.start()
