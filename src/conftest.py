@@ -56,3 +56,5 @@ def pytest_runtest_makereport(item, call):
 
             gm.set_List("errfunc", errlist)
             gm.set_List("errmsg", msglist)
+        elif rep.passed:
+            pass

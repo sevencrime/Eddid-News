@@ -21,7 +21,8 @@ def get_flashAPI(channel, max_time=None):
         data['max_time'] = max_time
 
     print("正在请求flash_list接口")
-    resp = requests.get(api_url, params=data, headers=headers, timeout=10).json()
+    s = requests.session()
+    resp = s.get(api_url, params=data, headers=headers, timeout=10).json()
 
     log.debug("max_time 为 {} 时, 快讯接口返回的数据为: {}".format((max_time or 'nowtime'), resp, ))
     # allure.attach('', '打开的日期:{}'.format((max_time or 'nowtime')), allure.attachment_type.TEXT)

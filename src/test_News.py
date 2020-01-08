@@ -5,6 +5,8 @@ import os
 import random
 import allure
 import pytest
+from apscheduler.schedulers.blocking import BlockingScheduler
+
 from src.Commons import CommonsTool
 from src.Commons.CommonsTool import send_email
 from src.Commons.GlobalMap import GlobalMap
@@ -366,9 +368,10 @@ def test_calendar_holiday_after(driver):
     with allure.step("对比数据"):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
-
 def run():
     print("开始执行程序")
+    curPath = os.path.abspath(os.path.dirname(__file__))
+    rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
     gm = GlobalMap()
     gm.set_List("errfunc", [])
     gm.set_List("errmsg", [])
@@ -376,9 +379,9 @@ def run():
 
     pytest.main(["-s", "-v" ,"test_News.py",
                  '--alluredir',
-                 '../report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
-                 "--reruns=2",
-                 "--reruns-delay=2"
+                 rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
+                 # "--reruns=2",
+                 # "--reruns-delay=2"
                  ])
 
     xml_report_path, html_report_path = CommonsTool.rmdir5()
@@ -395,9 +398,9 @@ def run():
 
 
 if __name__ =='__main__':
-    run()
+    # run()
     # print("启动定时任务--30分钟执行一次")
-    # apscheduler = BlockingScheduler()
-    # apscheduler.add_job(func=run, trigger='cron', minute='*/30')  #30分钟执行一次
-    # apscheduler._logger = log
-    # apscheduler.start()
+    apscheduler = BlockingScheduler()
+    apscheduler.add_job(func=run, trigger='cron', minute='*/20')  #30分钟执行一次
+    apscheduler._logger = log
+    apscheduler.start()
