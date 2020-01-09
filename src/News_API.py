@@ -85,5 +85,8 @@ def calendar_holiday_API(nowtime):
 
 if __name__ == '__main__':
     # bank_report_API(["hk"])
+    import time
+    start = time.time()
     r = get_flashAPI(-8200)
-    print(r)
+    print(time.time() - start)
+    print(len(r['data']))

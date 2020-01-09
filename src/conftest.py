@@ -64,5 +64,5 @@ def pytest_runtest_makereport(item, call):
             if call in msglist:
                 msglist.remove(call)
 
-            gm.set_List("errfunc", errlist)
+            gm.set_List("errfunc", list(errlist))
             gm.set_List("errmsg", msglist)

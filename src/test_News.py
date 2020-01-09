@@ -35,9 +35,10 @@ def test_flash_futures(driver):
     # 快讯-期货
     n = News_Flash(driver, url)
     with allure.step("爬取快讯-期货页面数据"):
-        flashList, addflashList= n.get_flash_futures()
+        flashList, addflashList, opentime = n.get_flash_futures()
 
     with allure.step("调用快讯-期货接口"):
+        allure.attach('', '调用接口的时间:{}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), allure.attachment_type.TEXT)
         flash_api_list = get_flashAPI(channel=-8200)
 
     with allure.step("对比数据"):
@@ -61,10 +62,11 @@ def test_flash_HK(driver):
     # 快讯 -港美股
     n = News_Flash(driver, url)
     with allure.step("爬取快讯-港美股页面数据"):
-        flashList, addflashList= n.get_flash_HK()
+        flashList, addflashList, opentime = n.get_flash_HK()
 
     with allure.step("调用快讯-港美股接口"):
-        flash_api_list = get_flashAPI(channel=3)
+        allure.attach('', '调用接口的时间:{}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), allure.attachment_type.TEXT)
+        flash_api_list = get_flashAPI(channel=3, max_time=opentime)
 
     with allure.step("对比数据"):
         n.same_flashData(flashList, flash_api_list['data'])
@@ -379,7 +381,7 @@ def run():
     gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
     pytest.main(["-s", "-v" ,"test_News.py",
-                 '--alluredir',
+                 "--alluredir",
                  rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
                  # "--reruns=2",
                  # "--reruns-delay=2"
@@ -399,9 +401,9 @@ def run():
 
 
 if __name__ =='__main__':
-    run()
-    # print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-    # apscheduler = BlockingScheduler()
-    # apscheduler.add_job(func=run, trigger='cron', minute='*/20')  #30分钟执行一次
-    # apscheduler._logger = log
-    # apscheduler.start()
+    # run()
+    print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+    apscheduler = BlockingScheduler()
+    apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
+    apscheduler._logger = log
+    apscheduler.start()

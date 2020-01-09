@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import datetime
 import re
 
 import allure
@@ -10,6 +11,7 @@ from selenium.webdriver.common.by import By
 from src.Commons.BasePage import BasePage
 from src.Commons.CommonsTool import wait_loading
 from src.Commons.Logging import Logs
+from src.News_API import get_flashAPI
 
 
 class News_Flash(BasePage):
@@ -100,6 +102,11 @@ class News_Flash(BasePage):
         # print(driver.page_source)
         self.open()
         wait_loading(driver)
+        # 记录打开网页的时间, 传给API, 反正数据刷新
+        opentime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        allure.attach('', "快讯期货打开的时间 : {}".format(opentime), allure.attachment_type.TEXT)
+
+
         flashList = self.lxml_parse(driver)
         print("页面返回的数据条数为 : {}".format(len(flashList)))
 
@@ -118,7 +125,7 @@ class News_Flash(BasePage):
         self.log.debug("页面初始数据flashList为 : {}".format(flashList, ))
         self.log.debug("页面点击加载更多后的数据addflashList为 : {}".format(addflashList, ))
 
-        return flashList, addflashList
+        return flashList, addflashList, opentime
 
 
     def get_flash_HK(self):
@@ -130,6 +137,10 @@ class News_Flash(BasePage):
         # print(driver.page_source)
         self.find_element(*(By.XPATH, '//a[contains(text(), "港美股")]')).click()
         wait_loading(driver)
+
+        # 记录打开网页的时间, 传给API, 反正数据刷新
+        opentime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        allure.attach('', "快讯期货打开的时间 : {}".format(opentime), allure.attachment_type.TEXT)
 
         flashList = self.lxml_parse(driver)
         print("快讯-港美股页面返回的数据条数为 : {}".format(len(flashList)))
@@ -150,7 +161,7 @@ class News_Flash(BasePage):
         self.log.debug("页面初始数据flashList为 : {}".format(flashList, ))
         self.log.debug("页面点击加载更多后的数据addflashList为 : {}".format(addflashList, ))
         # import pdb; pdb.set_trace
-        return flashList, addflashList
+        return flashList, addflashList, opentime
 
 
 

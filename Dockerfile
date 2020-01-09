@@ -17,7 +17,7 @@ RUN pip install --upgrade pip --index-url https://pypi.douban.com/simple
 
 # 工作目录
 WORKDIR /Eddid-News
-ADD . /Eddid-News
+# ADD . /Eddid-News
 
 # pip安装依赖包
 RUN apk add --update --no-cache g++ gcc libxslt-dev &&\ 
@@ -29,5 +29,5 @@ EXPOSE 80
 ENTRYPOINT ["python"]
 
 # 默认显示help帮助信息
-CMD ["--help"]
+CMD ["test_News.py"]
 
