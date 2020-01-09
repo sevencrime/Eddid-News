@@ -46,15 +46,23 @@ def pytest_runtest_makereport(item, call):
     rep = outcome.get_result()
     setattr(item, "rep_" + rep.when, rep)
     if rep.when == 'call':
+
+        errlist = set(gm.get_value("errfunc"))
+        msglist = gm.get_value("errmsg")
+
         if rep.failed:
             # 把测试失败的记录下来
-            errlist = gm.get_value("errfunc")
-            msglist = gm.get_value("errmsg")
-
-            errlist.append(item)
+            errlist.add(item)
             msglist.append(call)
+
+            gm.set_List("errfunc", list(errlist))
+            gm.set_List("errmsg", msglist)
+
+        elif rep.passed:
+            if item in errlist:
+                errlist.remove(item)
+            if call in msglist:
+                msglist.remove(call)
 
             gm.set_List("errfunc", errlist)
             gm.set_List("errmsg", msglist)
-        elif rep.passed:
-            pass

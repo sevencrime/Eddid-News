@@ -368,6 +368,7 @@ def test_calendar_holiday_after(driver):
     with allure.step("对比数据"):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
+
 def run():
     print("开始执行程序")
     curPath = os.path.abspath(os.path.dirname(__file__))
@@ -398,9 +399,9 @@ def run():
 
 
 if __name__ =='__main__':
-    # run()
-    # print("启动定时任务--30分钟执行一次")
-    apscheduler = BlockingScheduler()
-    apscheduler.add_job(func=run, trigger='cron', minute='*/20')  #30分钟执行一次
-    apscheduler._logger = log
-    apscheduler.start()
+    run()
+    # print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+    # apscheduler = BlockingScheduler()
+    # apscheduler.add_job(func=run, trigger='cron', minute='*/20')  #30分钟执行一次
+    # apscheduler._logger = log
+    # apscheduler.start()
