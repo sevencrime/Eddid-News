@@ -75,7 +75,7 @@ class News_calendar(BasePage):
                 unit = '' if apilist[i]['unit'] == None else apilist[i]['unit']  # 接口返回的unit字段(单位)
                 assert pagelist[i]['star'] == apilist[i]['star']
 
-                assert pagelist[i]['pub_time'] == apilist[i]['time_status']
+                assert pagelist[i]['pub_time'] == (apilist[i]['time_status'] or '')
 
                 assert pagelist[i]['title'] == (apilist[i]['indicator_name'] + apilist[i]['time_period'])
 

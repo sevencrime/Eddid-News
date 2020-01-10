@@ -140,7 +140,7 @@ class News_Flash(BasePage):
 
         # 记录打开网页的时间, 传给API, 反正数据刷新
         opentime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        allure.attach('', "快讯期货打开的时间 : {}".format(opentime), allure.attachment_type.TEXT)
+        allure.attach('', "快讯港美股打开的时间 : {}".format(opentime), allure.attachment_type.TEXT)
 
         flashList = self.lxml_parse(driver)
         print("快讯-港美股页面返回的数据条数为 : {}".format(len(flashList)))

@@ -66,7 +66,7 @@ def test_flash_HK(driver):
 
     with allure.step("调用快讯-港美股接口"):
         allure.attach('', '调用接口的时间:{}'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')), allure.attachment_type.TEXT)
-        flash_api_list = get_flashAPI(channel=3, max_time=opentime)
+        flash_api_list = get_flashAPI(channel=3)
 
     with allure.step("对比数据"):
         n.same_flashData(flashList, flash_api_list['data'])
