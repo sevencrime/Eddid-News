@@ -19,16 +19,16 @@ def driver():
     mobileEmulation = {'deviceName': 'iPhone X'}
     chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
 
-    driver = webdriver.Chrome(
-        executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
-        chrome_options=chrome_options)
+    # driver = webdriver.Chrome(
+    #     executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
+    #     chrome_options=chrome_options)
 
     # 使用远程服务器启动
-    # driver = webdriver.Remote(
-    #     command_executor='http://192.168.50.158:12777/wd/hub',
-    #     desired_capabilities=DesiredCapabilities.CHROME,
-    #     options=chrome_options
-    # )
+    driver = webdriver.Remote(
+        command_executor='http://45.130.146.50:12777/wd/hub',
+        desired_capabilities=DesiredCapabilities.CHROME,
+        options=chrome_options
+    )
 
 
     return driver
