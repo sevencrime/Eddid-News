@@ -5,6 +5,7 @@ cd dir
 
 在当前目录下创建一个名叫 env 的目录（虚拟环境）
 virtualenv env
+(出现 virtualenv command not found  :  ln -s /usr/local/python3/bin/virtualenv /usr/bin/virtualenv)
 
 启动虚拟环境
 cd ENV
