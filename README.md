@@ -1,15 +1,15 @@
 安装 virtualenv
 pip install virtualenv -i https://pypi.douban.com/simple
 
-cd dir
+cd WORKdir
 
 在当前目录下创建一个名叫 env 的目录（虚拟环境）
-virtualenv env
-(出现 virtualenv command not found  :  ln -s /usr/local/python3/bin/virtualenv /usr/bin/virtualenv)
+virtualenv venv
 
-启动虚拟环境
-cd ENV
-source ./bin/activate
+安装依赖
+venv\Scripts\pip install -r requirements.txt --index-url https://pypi.douban.com/simple
 
-退出虚拟环境
-deactivate
+
+windows进入虚拟环境：进入到虚拟环境的scripts文件夹中，然后执行activate
+
+退出虚拟环境很简单，通过一个命令就可以完成：deactivate
