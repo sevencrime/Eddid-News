@@ -44,7 +44,7 @@ def rmdir5():
         # shutil模块, 文件高级库
         shutil.rmtree(xml_report_pathlib[0])
     
-    if len(html_report_pathlib) >= 50:
+    if len(html_report_pathlib) >= 30:
         # 删除第一个
         shutil.rmtree(html_report_pathlib[0])
 
