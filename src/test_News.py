@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import os
+import subprocess
 import random
 import allure
 import pytest
@@ -387,8 +388,9 @@ def run():
                  # "--reruns-delay=2"
                  ])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
-    os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
-        xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
+    print("ssssssssssssssssssssssssssssssss完成 了")
+    subprocess.Popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
+        xml_report_path=xml_report_path, html_report_path=html_report_path)).wait()
 
     if gm.get_value("errfunc") != [] and gm.get_value("errfunc") != 'Null_':
         # 发送邮件提醒
