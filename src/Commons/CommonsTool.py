@@ -28,7 +28,6 @@ def rmdir5():
     rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
     xml_report_pathlib = glob.glob(rootPath + r'/report/xml*')
     html_report_pathlib = glob.glob(rootPath + r'/report/html*')
-    import pdb; pdb.set_trace()
     try:
         html_report_name = rootPath + r'\report\html' + os.path.basename(xml_report_pathlib[-1])[3:]
 
