@@ -369,6 +369,8 @@ def test_calendar_holiday_after(driver):
     with allure.step("对比数据"):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
+def test1():
+    assert 1 == 2
 
 def run():
     print("开始执行程序")
@@ -378,7 +380,7 @@ def run():
     gm.set_List("errfunc", [])
     gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
-    pytest.main(["-s", "-v", "test_News.py",
+    pytest.main(["-s", "-v", "test_News.py::test1",
                  "--alluredir",
                  rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
                  "--reruns=2",
@@ -399,9 +401,9 @@ def run():
 
 
 if __name__ =='__main__':
-    run()
-    # print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-    # apscheduler = BlockingScheduler()
-    # apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
-    # apscheduler._logger = log
-    # apscheduler.start()
+    # run()
+    print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+    apscheduler = BlockingScheduler()
+    apscheduler.add_job(func=run, trigger='cron', minute='*/15')  #30分钟执行一次
+    apscheduler._logger = log
+    apscheduler.start()
