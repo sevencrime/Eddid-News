@@ -386,7 +386,7 @@ def run():
                  "--reruns=2",
                  "--reruns-delay=2"
                  ])
-
+    import pdb; pdb.set_trace()
     xml_report_path, html_report_path = CommonsTool.rmdir5()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
         xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
