@@ -7,14 +7,13 @@ import allure
 import pytest
 from apscheduler.schedulers.blocking import BlockingScheduler
 
-from src.Commons import CommonsTool
-from src.Commons.CommonsTool import send_email
-from src.Commons.GlobalMap import GlobalMap
-from src.Commons.Logging import Logs
-from src.News_API import get_flashAPI, bank_report_API, calendar_data_API, calendar_event_API, calendar_holiday_API
-from src.pages.GET_New_flash import News_Flash
-from src.pages.GET_News_bankReport import Bank_Report
-from src.pages.GET_News_calendar import News_calendar
+from Commons import CommonsTool
+from Commons.GlobalMap import GlobalMap
+from Commons.Logging import Logs
+from News_API import get_flashAPI, bank_report_API, calendar_data_API, calendar_event_API, calendar_holiday_API
+from pages.GET_New_flash import News_Flash
+from pages.GET_News_bankReport import Bank_Report
+from pages.GET_News_calendar import News_calendar
 
 # 生产环境
 url = 'https://download.eddidapp.com/page/eddid-news/index.html'
@@ -377,10 +376,9 @@ def run():
     rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
     gm = GlobalMap()
     gm.set_List("errfunc", [])
-    gm.set_List("errmsg", [])
     gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
-    pytest.main(["-s", "-v" ,"test_News.py",
+    pytest.main(["-s", "-v", "test_News.py",
                  "--alluredir",
                  rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
                  "--reruns=2",
@@ -393,7 +391,7 @@ def run():
 
     if gm.get_value("errfunc") != [] and gm.get_value("errfunc") != 'Null_':
         # 发送邮件提醒
-        send_email(gm.get_value("nowtime"), gm.get_value("errfunc"), gm.get_value("errmsg"))
+        CommonsTool.send_email(gm.get_value("nowtime"), gm.get_value("errfunc"))
         # 删除变量
         gm.del_map("errfunc")
         gm.del_map("errmsg")
@@ -401,9 +399,9 @@ def run():
 
 
 if __name__ =='__main__':
-    # run()
-    print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-    apscheduler = BlockingScheduler()
-    apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
-    apscheduler._logger = log
-    apscheduler.start()
+    run()
+    # print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+    # apscheduler = BlockingScheduler()
+    # apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
+    # apscheduler._logger = log
+    # apscheduler.start()

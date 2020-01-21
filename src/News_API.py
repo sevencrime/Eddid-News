@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import json
 import requests
-from src.Commons.Logging import Logs
+from Commons.Logging import Logs
 
 log = Logs()
 

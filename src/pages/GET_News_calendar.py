@@ -6,9 +6,9 @@ import allure
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 
-from src.Commons.BasePage import BasePage
-from src.Commons.CommonsTool import wait_loading
-from src.Commons.Logging import Logs
+from Commons.BasePage import BasePage
+from Commons.CommonsTool import wait_loading
+from Commons.Logging import Logs
 
 
 class News_calendar(BasePage):

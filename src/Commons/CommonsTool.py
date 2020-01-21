@@ -62,7 +62,7 @@ def set_details(s):
     except UnicodeDecodeError:
         return formataddr((Header(name, 'gbk')).encode(), addr)
 
-def send_email(time, errfunc, errmsg):
+def send_email(time, errfunc):
     smtp_server = "smtp.sina.cn"
     username = "15089514626@sina.cn"
     password = "Abcd1234"

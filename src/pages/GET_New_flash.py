@@ -8,10 +8,10 @@ from bs4 import BeautifulSoup
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 
-from src.Commons.BasePage import BasePage
-from src.Commons.CommonsTool import wait_loading
-from src.Commons.Logging import Logs
-from src.News_API import get_flashAPI
+from Commons.BasePage import BasePage
+from Commons.CommonsTool import wait_loading
+from Commons.Logging import Logs
+from News_API import get_flashAPI
 
 
 class News_Flash(BasePage):

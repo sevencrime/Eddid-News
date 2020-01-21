@@ -4,7 +4,8 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from src.Commons.GlobalMap import GlobalMap
+from Commons.GlobalMap import GlobalMap
+import platform
 
 gm = GlobalMap()
 
@@ -19,16 +20,18 @@ def driver():
     mobileEmulation = {'deviceName': 'iPhone X'}
     chrome_options.add_experimental_option('mobileEmulation', mobileEmulation)
 
-    # driver = webdriver.Chrome(
-    #     executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
-    #     chrome_options=chrome_options)
+    if platform.system() == "Windows" : 
+        driver = webdriver.Chrome(
+            executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
+            chrome_options=chrome_options)
 
-    # 使用远程服务器启动
-    driver = webdriver.Remote(
-        command_executor='http://45.130.146.50:12777/wd/hub',
-        desired_capabilities=DesiredCapabilities.CHROME,
-        options=chrome_options
-    )
+    elif platform.system() == "Linux":
+        # 使用远程服务器启动
+        driver = webdriver.Remote(
+            command_executor='http://45.130.146.50:12777/wd/hub',
+            desired_capabilities=DesiredCapabilities.CHROME,
+            options=chrome_options
+        )
 
 
     return driver
@@ -46,23 +49,16 @@ def pytest_runtest_makereport(item, call):
     rep = outcome.get_result()
     setattr(item, "rep_" + rep.when, rep)
     if rep.when == 'call':
-
         errlist = set(gm.get_value("errfunc"))
-        msglist = gm.get_value("errmsg")
 
         if rep.failed:
             # 把测试失败的记录下来
             errlist.add(item)
-            msglist.append(call)
 
             gm.set_List("errfunc", list(errlist))
-            gm.set_List("errmsg", msglist)
 
         elif rep.passed:
             if item in errlist:
                 errlist.remove(item)
-            if call in msglist:
-                msglist.remove(call)
 
             gm.set_List("errfunc", list(errlist))
-            gm.set_List("errmsg", msglist)
