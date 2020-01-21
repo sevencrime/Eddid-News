@@ -388,8 +388,9 @@ def run():
                  # "--reruns-delay=2"
                  ])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
-    subprocess.Popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
-        xml_report_path=xml_report_path, html_report_path=html_report_path)).wait()
+    
+    os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(
+        xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
 
     if gm.get_value("errfunc") != [] and gm.get_value("errfunc") != 'Null_':
         # 发送邮件提醒

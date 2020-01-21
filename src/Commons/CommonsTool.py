@@ -26,10 +26,10 @@ def wait_loading(driver):
 def rmdir5():
     curPath = os.path.abspath(os.path.dirname(__file__))
     rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
-    xml_report_pathlib = glob.glob(rootPath + r'/report/xml*')
-    html_report_pathlib = glob.glob(rootPath + r'/report/html*')
+    xml_report_pathlib = glob.glob(rootPath + '\\report\\xml*')
+    html_report_pathlib = glob.glob(rootPath + '\\report\\html*')
     try:
-        html_report_name = rootPath + r'/report/html' + os.path.basename(xml_report_pathlib[-1])[3:]
+        html_report_name = rootPath + '\\report\\html' + os.path.basename(xml_report_pathlib[-1])[3:]
 
     except IndexError:
         log.error("rmdir5, 数组越界")
