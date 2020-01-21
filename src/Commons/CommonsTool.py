@@ -29,7 +29,7 @@ def rmdir5():
     xml_report_pathlib = glob.glob(rootPath + r'/report/xml*')
     html_report_pathlib = glob.glob(rootPath + r'/report/html*')
     try:
-        html_report_name = rootPath + r'\report\html' + os.path.basename(xml_report_pathlib[-1])[3:]
+        html_report_name = rootPath + r'/report/html' + os.path.basename(xml_report_pathlib[-1])[3:]
 
     except IndexError:
         log.error("rmdir5, 数组越界")
