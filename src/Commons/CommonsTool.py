@@ -81,14 +81,14 @@ def send_email(time, errfunc):
     </html>
     """.format(time=time, errfunc="".join(n.name + ", " for n in errfunc))
 
-    import pdb; pdb.set_trace()
     # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
     msg = MIMEText(message, 'html', 'utf-8')
     msg['From'] = set_details("Onedi<{from_name}>".format(from_name=username))  #发送者
     msg['To'] = set_details("onedi<{to_url}>".format(to_url=sendaddr))      #接收者
     msg['Subject'] = Header("eddid-资讯数据出问题了啊!!!", 'utf-8').encode()     #标题
 
-    smtpServer = smtplib.SMTP(smtp_server, 25)
+    # smtpServer = smtplib.SMTP(smtp_server, 25)
+    smtpServer = smtplib.SMTP_SSL(smtp_server, 465)
     # smtpServer.set_debuglevel(1)
     smtpServer.login(username, password)
     smtpServer.sendmail(username, sendaddr, msg.as_string())
