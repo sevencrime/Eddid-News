@@ -25,10 +25,10 @@ def driver():
             executable_path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chromedriver.exe',
             chrome_options=chrome_options)
 
-    elif platform.system() == "Linux":
+    elif platform.system() == "Linux" or platform.system() == "linux":
         # 使用远程服务器启动
         driver = webdriver.Remote(
-            command_executor='http://45.130.146.50:12777/wd/hub',
+            command_executor='http://127.0.0.1:12777/wd/hub',
             desired_capabilities=DesiredCapabilities.CHROME,
             options=chrome_options
         )
