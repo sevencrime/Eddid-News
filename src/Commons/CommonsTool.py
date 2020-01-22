@@ -81,7 +81,7 @@ def send_email(time, errfunc):
     </html>
     """.format(time=time, errfunc="".join(n.name + ", " for n in errfunc))
 
-
+    import pdb; pdb.set_trace()
     # 三个参数：第一个为文本内容，第二个 plain 设置文本格式，第三个 utf-8 设置编码
     msg = MIMEText(message, 'html', 'utf-8')
     msg['From'] = set_details("Onedi<{from_name}>".format(from_name=username))  #发送者

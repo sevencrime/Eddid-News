@@ -388,7 +388,6 @@ def run():
                  # "--reruns-delay=2"
                  ])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
-    import pdb; pdb.set_trace()
     os.popen("allure generate {xml_report_path} -o {html_report_path} --clean".format(xml_report_path=xml_report_path, html_report_path=html_report_path)).read()
 
     if gm.get_value("errfunc") != [] and gm.get_value("errfunc") != 'Null_':
