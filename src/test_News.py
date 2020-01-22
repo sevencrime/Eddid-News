@@ -378,7 +378,7 @@ def run():
     gm.set_List("errfunc", [])
     gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
-    pytest.main(["-s", "-v", "test_News.py::test_flash_futures" 
+    pytest.main(["-s", "-v", "test_News.py" 
                  "--alluredir",
                  rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
                  "--reruns=2",  # pip install pytest-rerunfailures
@@ -397,9 +397,9 @@ def run():
 
 
 if __name__ =='__main__':
-    run()
-    # print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-    # apscheduler = BlockingScheduler()
-    # apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
-    # apscheduler._logger = log
-    # apscheduler.start()
+    # run()
+    print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+    apscheduler = BlockingScheduler()
+    apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
+    apscheduler._logger = log
+    apscheduler.start()
