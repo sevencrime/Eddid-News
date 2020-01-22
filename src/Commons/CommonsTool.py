@@ -65,7 +65,7 @@ def send_email(time, errfunc):
     smtp_server = "smtp.sina.cn"
     username = "15089514626@sina.cn"
     password = "Abcd1234"
-    sendaddr = "onedi@qq.com"
+    sendaddr = "zhengqinyuan@edsz9.com"
 
     message = """
     <html>
@@ -77,6 +77,7 @@ def send_email(time, errfunc):
             <p>报错的函数为 : {errfunc}</p>
             <br>
             <p>报告地址  <a>192.168.50.158:7777</a></p>
+            <p>远程地址  <a>129.204.214.210:7777</a></p>
          </body>
     </html>
     """.format(time=time, errfunc="".join(n.name + ", " for n in errfunc))
