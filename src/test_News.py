@@ -381,7 +381,7 @@ def run():
     pytest.main(["-s", "-v", "test_News.py", 
                  "--alluredir",
                  rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
-                 "--reruns=2",
+                 "--reruns=2",  # pip install pytest-rerunfailures
                  "--reruns-delay=2"
                  ])
     xml_report_path, html_report_path = CommonsTool.rmdir5()
