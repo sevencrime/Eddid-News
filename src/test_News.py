@@ -378,7 +378,7 @@ def run():
     gm.set_List("errfunc", [])
     gm.set_value(nowtime=datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
 
-    pytest.main(["-s", "-v", "test_News.py" 
+    pytest.main(["-s", "-v", "test_News.py",
                  "--alluredir",
                  rootPath + '/report/xml_{time}'.format(time=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')),
                  "--reruns=2",  # pip install pytest-rerunfailures
