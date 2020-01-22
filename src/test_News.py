@@ -371,7 +371,7 @@ def test_calendar_holiday_after(driver):
         calendar.same_holiday(calendardataList, dataAPI_list)
 
 def run():
-    print("开始执行程序")
+    print("开始执行程序 {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')))
     curPath = os.path.abspath(os.path.dirname(__file__))
     rootPath = curPath[:curPath.find("Eddid-News") + len("Eddid-News")]
     gm = GlobalMap()
