@@ -397,9 +397,9 @@ def run():
 
 
 if __name__ =='__main__':
-    # run()
-    print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
-    apscheduler = BlockingScheduler()
-    apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
-    apscheduler._logger = log
-    apscheduler.start()
+    run()
+    # print("启动定时任务", datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S'))
+    # apscheduler = BlockingScheduler()
+    # apscheduler.add_job(func=run, trigger='cron', minute='*/10')  #30分钟执行一次
+    # apscheduler._logger = log
+    # apscheduler.start()
