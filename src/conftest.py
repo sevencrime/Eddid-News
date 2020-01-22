@@ -3,6 +3,7 @@
 
 import pytest
 from selenium import webdriver
+from selenium.webdriver import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from Commons.GlobalMap import GlobalMap
 import platform
