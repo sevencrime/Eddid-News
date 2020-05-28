@@ -31,7 +31,7 @@ class Bank_Report(BasePage):
             assert pagelist[i]['latest_rating'] == (apilist[i]['latest_rating'] or '')
             assert pagelist[i]['previous_target_price'] == (apilist[i]['previous_target_price'] or '')
             assert pagelist[i]['latest_target_price'] == (apilist[i]['latest_target_price'] or '')
-            assert pagelist[i]['institution'] == apilist[i]['institution']
+            assert pagelist[i]['institution'] == (apilist[i]['institution'] or '')
 
     def bankReport_lxml_parse(self):
         # 解析网页
